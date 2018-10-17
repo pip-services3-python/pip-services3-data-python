@@ -1,4 +1,0 @@
-{
-  "test/persistence/test_DummyFilePersistence.py": true,
-  "test/persistence/test_DummyMemoryPersistence.py": true
-}
