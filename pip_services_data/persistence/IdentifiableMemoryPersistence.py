@@ -5,7 +5,7 @@
     
     Identifiable memory persistence implementation
     
-    :copyright: Conceptual Vision Consulting LLC 2015-2016, see AUTHORS for more details.
+    :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
 
@@ -27,16 +27,83 @@ from .MemoryPersistence import MemoryPersistence
 filtered = filter
 
 class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, IGetter, ISetter):
+    """
+    Abstract persistence component that stores data in memory
+    and implements a number of CRUD operations over data items with unique ids.
+    The data items must implement IIdentifiable interface.
+
+    In basic scenarios child classes shall only override [[getPageByFilter]],
+    [[getListByFilter]] or [[deleteByFilter]] operations with specific filter function.
+    All other operations can be used out of the box.
+
+    In complex scenarios child classes can implement additional operations by
+    accessing cached items via this._items property and calling [[save]] method on updates.
+
+    ### Configuration parameters ###
+
+        - options:
+            - max_page_size:       Maximum number of items returned in a single page (default: 100)
+
+    ### References ###
+
+        - *:logger:*:*:1.0       (optional) ILogger components to pass log messages
+
+    Example:
+        class MyMemoryPersistence(IdentifiableMemoryPersistence):
+
+            def get_page_by_filter(self, correlationId, filter, paging):
+                super().get_page_by_filter(correlationId, filter, paging, None)
+
+            persistence = MyMemoryPersistence("./data/data.json")
+
+            item = persistence.create("123", MyData("1", "ABC"))
+
+            mydata = persistence.get_page_by_filter("123", FilterParams.from_tuples("name", "ABC"), None, None)
+            print str(mydata.get_data())
+
+            persistence.delete_by_id("123", "1")
+            ...
+    """
     _max_page_size = 100
 
     def __init__(self, loader = None, saver = None):
+        """
+        Creates a new instance of the persistence.
+
+        :param loader: (optional) a loader to load items from external datasource.
+
+        :param saver: (optional) a saver to save items to external datasource.
+        """
         super(IdentifiableMemoryPersistence, self).__init__(loader, saver)
 
     def configure(self, config):
+        """
+        Configures component by passing configuration parameters.
+
+        :param config: configuration parameters to be set.
+        """
         self._max_page_size = config.get_as_integer_with_default("options.max_page_size", self._max_page_size)
 
 
     def get_page_by_filter(self, correlation_id, filter, paging, sort = None, select = None):
+        """
+        Gets a page of data items retrieved by a given filter and sorted according to sort parameters.
+
+        This method shall be called by a public getPageByFilter method from child class that
+        receives FilterParams and converts them into a filter function.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param filter: (optional) a filter function to filter items
+
+        :param paging: (optional) paging parameters
+
+        :param sort: (optional) sorting parameters
+
+        :param select: (optional) projection parameters (not used yet)
+
+        :return: a data page of result by filter.
+        """
         self._lock.acquire()
         try:
             items = list(self._items)
@@ -47,7 +114,8 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
         if filter != None:
             items = filtered(filter, items)
         if sort != None:
-            items = sorted(items, sort)
+            items = items.sort(key=sort)
+            # items = sorted(items, sort)
 
         # Prepare paging parameters
         paging = paging if paging != None else PagingParams()
@@ -72,6 +140,22 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
 
     def get_list_by_filter(self, correlation_id, filter, sort = None, select = None):
+        """
+        Gets a list of data items retrieved by a given filter and sorted according to sort parameters.
+
+        This method shall be called by a public getListByFilter method from child class that
+        receives FilterParams and converts them into a filter function.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param filter: (optional) a filter function to filter items
+
+        :param sort: (optional) sorting parameters
+
+        :param select: (optional) projection parameters (not used yet)
+
+        :return: a data list of results by filter.
+        """
         self._lock.acquire()
         try:
             items = list(self._items)
@@ -82,7 +166,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
         if filter != None:
             items = filtered(filter, items)
         if sort != None:
-            items = sorted(items, sort) 
+            items = sorted(items, key=sort)
                         
         # Convert values      
         if select != None:
@@ -92,6 +176,15 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
         return items
 
     def get_list_by_ids(self, correlation_id, ids):
+        """
+        Gets a list of data items retrieved by given unique ids.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param ids: ids of data items to be retrieved
+
+        :return: a data list of results by ids.
+        """
         def filter(item):
             return item['id'] in ids
 
@@ -106,6 +199,15 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
 
     def get_one_by_id(self, correlation_id, id):
+        """
+        Gets a data item by its unique id.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param id: an id of data item to be retrieved.
+
+        :return: data item by id.
+        """
         self._lock.acquire()
         try:
             item = self._find_one(id)
@@ -120,6 +222,16 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
 
     def get_one_random(self, correlation_id):
+        """
+        Gets a random item from items that match to a given filter.
+
+        This method shall be called by a public getOneRandom method from child class
+        that receives FilterParams and converts them into a filter function.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :return: a random item.
+        """
         self._lock.acquire()
         try:
             if len(self._items) == 0:
@@ -139,6 +251,15 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
 
     def create(self, correlation_id, item):
+        """
+        Creates a data item.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param item: an item to be created.
+
+        :return: a created item
+        """
         if 'id' not in item or item['id'] == None:
             item['id'] = IdGenerator.next_long()
 
@@ -156,6 +277,15 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
 
     def set(self, correlation_id, item):
+        """
+        Sets a data item. If the data item exists it updates it, otherwise it create a new data item.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param item: an item to be set.
+
+        :return: an updated item
+        """
         if 'id' not in item or item['id'] == None:
             item['id'] = IdGenerator.next_long()
 
@@ -181,6 +311,15 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
 
     def update(self, correlation_id, new_item):
+        """
+        Updates a data item.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param new_item: an item to be updated.
+
+        :return: an updated item.
+        """
         self._lock.acquire()
         try:
             old_item = self._find_one(new_item['id'])
@@ -200,8 +339,18 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
         self.save(correlation_id)
         return new_item
 
-
     def update_partially(self, correlation_id, id, data):
+        """
+        Updates only few selected fields in a data item.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param id: an id of data item to be updated.
+
+        :param data: a map with fields to be updated.
+
+        :return: an updated item.
+        """
         new_item = None
 
         self._lock.acquire()
@@ -225,6 +374,15 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
 
     def delete_by_id(self, correlation_id, id):
+        """
+        Deleted a data item by it's unique id.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param id: an id of the item to be deleted
+
+        :return: a deleted item.
+        """
         self._lock.acquire()
         try:
             item = self._find_one(id)
@@ -244,6 +402,16 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
 
     def delete_by_filter(self, correlation_id, filter):
+        """
+        Deletes data items that match to a given filter.
+
+        This method shall be called by a public deleteByFilter method from child class that
+        receives FilterParams and converts them into a filter function.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param filter: (optional) a filter function to filter items.
+        """
         def negative_filter(item):
             return not filter(item)
 
@@ -254,7 +422,6 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
             self._items = filtered(negative_filter, self._items)
         finally:
             self._lock.release()
-
         deleted = old_length - len(self._items)
         self._logger.trace(correlation_id, "Deleted " + str(deleted) + " items")
 
@@ -263,6 +430,13 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
 
     def delete_by_ids(self, correlation_id, ids):
+        """
+        Deletes multiple data items by their unique ids.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+
+        :param ids: ids of data items to be deleted.
+        """
         def filter(item):
             return item['id'] in ids
         

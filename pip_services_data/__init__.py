@@ -3,9 +3,9 @@
     pip_services_data.__init__
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
-    Data module initialization
+    Contains interfaces for various design patterns that work with data.
     
-    :copyright: Conceptual Vision Consulting LLC 2015-2016, see AUTHORS for more details.
+    :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
 

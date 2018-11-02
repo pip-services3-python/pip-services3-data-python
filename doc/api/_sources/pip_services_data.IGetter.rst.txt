@@ -1,0 +1,7 @@
+pip\_services\_data.IGetter module
+==================================
+
+.. automodule:: pip_services_data.IGetter
+    :members:
+    :undoc-members:
+    :show-inheritance:

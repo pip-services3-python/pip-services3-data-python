@@ -43,7 +43,7 @@ class DummyPersistenceFixture:
         assert 2 == len(dummies.data)
 
         # Update the dummy
-        dummy1['content'] = "Updated Content 1";
+        dummy1['content'] = "Updated Content 1"
         dummy = self._persistence.update(
             None,
             dummy1

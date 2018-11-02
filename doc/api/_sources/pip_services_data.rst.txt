@@ -1,0 +1,33 @@
+pip\_services\_data package
+===========================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    pip_services_data.persistence
+
+Submodules
+----------
+
+.. toctree::
+
+   pip_services_data.IFilteredPageReader
+   pip_services_data.IFilteredReader
+   pip_services_data.IGetter
+   pip_services_data.ILoader
+   pip_services_data.IPartialUpdater
+   pip_services_data.IQuerablePageReader
+   pip_services_data.IQuerableReader
+   pip_services_data.ISaver
+   pip_services_data.ISetter
+   pip_services_data.IWriter
+
+Module contents
+---------------
+
+.. automodule:: pip_services_data
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,21 @@
+pip\_services\_data.persistence package
+=======================================
+
+Submodules
+----------
+
+.. toctree::
+
+   pip_services_data.persistence.FilePersistence
+   pip_services_data.persistence.IdentifiableFilePersistence
+   pip_services_data.persistence.IdentifiableMemoryPersistence
+   pip_services_data.persistence.JsonFilePersister
+   pip_services_data.persistence.MemoryPersistence
+
+Module contents
+---------------
+
+.. automodule:: pip_services_data.persistence
+    :members:
+    :undoc-members:
+    :show-inheritance:

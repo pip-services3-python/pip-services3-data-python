@@ -1,0 +1,7 @@
+pip\_services\_data.ILoader module
+==================================
+
+.. automodule:: pip_services_data.ILoader
+    :members:
+    :undoc-members:
+    :show-inheritance:

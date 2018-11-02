@@ -1,0 +1,7 @@
+pip\_services\_data.IPartialUpdater module
+==========================================
+
+.. automodule:: pip_services_data.IPartialUpdater
+    :members:
+    :undoc-members:
+    :show-inheritance:

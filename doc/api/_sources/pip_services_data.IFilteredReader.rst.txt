@@ -1,0 +1,7 @@
+pip\_services\_data.IFilteredReader module
+==========================================
+
+.. automodule:: pip_services_data.IFilteredReader
+    :members:
+    :undoc-members:
+    :show-inheritance:
