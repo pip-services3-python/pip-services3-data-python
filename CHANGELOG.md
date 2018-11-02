@@ -1,5 +1,14 @@
 # Data processing and persistence components for Pip.Services in Python Changelog
 
+## <a name="3.0.0"></a> 3.0.0 (2018-10-30)
+
+### New release
+* Restructuring package
+
+### Features
+- **Persistence** - in-memory and file persistence
+- **Data** - data interfaces
+
 ## <a name="2.2.0"></a> 2.2.0 (2017-04-11)
 
 ### Features

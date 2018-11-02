@@ -5,16 +5,15 @@ It provides implementation of reusable data processing and persistence component
 
 Functionality is divided into few packahes:
 
-- **Memory** - in-memory persistence
-- **File** - file persistence
-- **MongoDB** - MongoDB persistence
+- **Persistence** - in-memory and file persistence
+- **Data** - data interfaces
 
 Quick Links:
 
-* [Downloads](https://github.com/pip-services/pip-services-data-python/blob/master/doc/Downloads.md)
-* [API Reference](http://htmlpreview.github.io/?https://github.com/pip-services/pip-services-data-python/blob/master/doc/api/index.html)
-* [Building and Testing](https://github.com/pip-services/pip-services-data-python/blob/master/doc/Development.md)
-* [Contributing](https://github.com/pip-services/pip-services-data-python/blob/master/doc/Development.md/#contrib)
+* [Downloads](https://github.com/pip-services-python/pip-services-data-python/blob/master/doc/Downloads.md)
+* [API Reference](http://htmlpreview.github.io/?https://github.com/pip-services-python/pip-services-data-python/blob/master/doc/api/index.html)
+* [Building and Testing](https://github.com/pip-services-python/pip-services-data-python/blob/master/doc/Development.md)
+* [Contributing](https://github.com/pip-services-python/pip-services-data-python/blob/master/doc/Development.md/#contrib)
 
 ## Acknowledgements
 
