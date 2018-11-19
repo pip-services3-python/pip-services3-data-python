@@ -12,8 +12,9 @@
 from pip_services_commons.data import FilterParams
 from pip_services_data.persistence import IdentifiableMemoryPersistence
 from ..IDummyPersistence import IDummyPersistence
+from pip_services_data import IGetter, IWriter, IPartialUpdater
 
-class DummyMemoryPersistence(IdentifiableMemoryPersistence, IDummyPersistence):
+class DummyMemoryPersistence(IdentifiableMemoryPersistence, IPartialUpdater):
     
     def __init__(self):
         super(DummyMemoryPersistence, self).__init__()
@@ -27,4 +28,4 @@ class DummyMemoryPersistence(IdentifiableMemoryPersistence, IDummyPersistence):
                 return False
             return True
             
-        return super(DummyMemoryPersistence, self).get_page_by_filter(correlation_id, filter_dummy, paging)
+        return super(DummyMemoryPersistence, self).get_page_by_filter(correlation_id, filter_dummy, paging=paging)

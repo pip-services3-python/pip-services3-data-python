@@ -112,9 +112,9 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
             
         # Filter and sort
         if filter != None:
-            items = filtered(filter, items)
+            items = list(filtered(filter, items))
         if sort != None:
-            items = items.sort(key=sort)
+            items = list(items.sort(key=sort))
             # items = sorted(items, sort)
 
         # Prepare paging parameters
@@ -164,16 +164,16 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
         # Filter and sort
         if filter != None:
-            items = filtered(filter, items)
+            items = list(filtered(filter, items))
         if sort != None:
-            items = sorted(items, key=sort)
+            items = list(sorted(items, key=sort))
                         
         # Convert values      
         if select != None:
             items = map(select, items)
                 
         # Return a list
-        return items
+        return list(items)
 
     def get_list_by_ids(self, correlation_id, ids):
         """
@@ -415,14 +415,14 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
         def negative_filter(item):
             return not filter(item)
 
-        old_length = len(self._items)
+        old_length = len(list(self._items))
 
         self._lock.acquire()
         try:
-            self._items = filtered(negative_filter, self._items)
+            self._items = list(filtered(negative_filter, self._items))
         finally:
             self._lock.release()
-        deleted = old_length - len(self._items)
+        deleted = old_length - len(list(self._items))
         self._logger.trace(correlation_id, "Deleted " + str(deleted) + " items")
 
         if (deleted > 0):

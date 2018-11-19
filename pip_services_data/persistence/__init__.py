@@ -19,3 +19,8 @@
 __all__ = ['MemoryPersistence', 'IdentifiableMemoryPersistence',
            'FilePersistence', 'IdentifiableFilePersistence', 'JsonFilePersister']
 
+from .MemoryPersistence import MemoryPersistence
+from .IdentifiableMemoryPersistence import IdentifiableMemoryPersistence
+from .FilePersistence import FilePersistence
+from .IdentifiableFilePersistence import IdentifiableFilePersistence
+from .JsonFilePersister import JsonFilePersister
