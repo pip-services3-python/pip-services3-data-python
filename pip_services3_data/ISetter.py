@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_data.ISetter
+    pip_services3_data.ISetter
     ~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Interface for data setters.

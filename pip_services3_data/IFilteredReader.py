@@ -1,27 +1,27 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_data.IQuerableReader
+    pip_services3_data.IFilteredReader
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
-    Interface for querable data readers.
+    Interface for filtered data readers.
     
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
 
-class IQuerableReader:
+class IFilteredReader:
     """
-    Interface for data processing components that can query a list of data items.
+    Interface for data processing components that can retrieve a list of data items by filter.
     """
-    def get_list_by_query(self, correlation_id, query, sort = None):
+    def get_list_by_filter(self, correlation_id, filter, sort = None):
         """
-        Gets a list of data items using a query string.
+        Gets a list of data items using filter parameters.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
 
-        :param query: (optional) a query string
+        :param filter: (optional) filter parameters
 
-        :param sort: (optional) sort parameters
+        :param paging: (optional) paging parameters
 
         :return: list of items
         """

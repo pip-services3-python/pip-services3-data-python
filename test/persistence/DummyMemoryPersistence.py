@@ -9,10 +9,10 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services_commons.data import FilterParams
-from pip_services_data.persistence import IdentifiableMemoryPersistence
+from pip_services3_commons.data import FilterParams
+from pip_services3_data.persistence import IdentifiableMemoryPersistence
 from ..IDummyPersistence import IDummyPersistence
-from pip_services_data import IGetter, IWriter, IPartialUpdater
+from pip_services3_data import IGetter, IWriter, IPartialUpdater
 
 class DummyMemoryPersistence(IdentifiableMemoryPersistence, IPartialUpdater):
     

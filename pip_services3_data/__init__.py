@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_data.__init__
+    pip_services3_data.__init__
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Contains interfaces for various design patterns that work with data.

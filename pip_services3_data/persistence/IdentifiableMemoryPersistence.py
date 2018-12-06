@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_data.persistence.IdentifiableMemoryPersistence
+    pip_services3_data.persistence.IdentifiableMemoryPersistence
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Identifiable memory persistence implementation
@@ -12,11 +12,11 @@
 import random
 import threading
 
-from pip_services_commons.refer import IReferenceable
-from pip_services_commons.config import IConfigurable
-from pip_services_commons.run import IOpenable, IClosable, ICleanable
-from pip_services_components.log import CompositeLogger
-from pip_services_commons.data import PagingParams, DataPage, IdGenerator
+from pip_services3_commons.refer import IReferenceable
+from pip_services3_commons.config import IConfigurable
+from pip_services3_commons.run import IOpenable, IClosable, ICleanable
+from pip_services3_components.log import CompositeLogger
+from pip_services3_commons.data import PagingParams, DataPage, IdGenerator
 from ..IWriter import IWriter
 from ..IGetter import IGetter
 from ..ISetter import ISetter

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_data.persistence.IdentifiableFilePersistence
+    pip_services3_data.persistence.IdentifiableFilePersistence
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Identifiable file persistence implementation

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_data.persistence.FilePersistence
+    pip_services3_data.persistence.FilePersistence
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     File persistence implementation
@@ -9,7 +9,7 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services_commons.config import IConfigurable
+from pip_services3_commons.config import IConfigurable
 from .MemoryPersistence import MemoryPersistence
 from .JsonFilePersister import JsonFilePersister
 

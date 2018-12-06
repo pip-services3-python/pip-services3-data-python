@@ -1,26 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_data.IGetter
+    pip_services3_data.ILoader
     ~~~~~~~~~~~~~~~~~~~~~~~~~
     
-    Interface for data getters.
+    Interface for data loaders.
     
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
 
-class IGetter:
+class ILoader:
     """
-    Interface for data processing components that can get data items.
+    Interface for data processing components that load data items.
     """
-    def get_one_by_id(self, correlation_id, id):
+    def load(self, correlation_id):
         """
-        Gets a data items by its unique id.
+        Loads data items.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
 
-        :param id: an id of item to be retrieved.
-
-        :return: an item by its id.
+        :return: a list of data items
         """
         raise NotImplementedError('Method from interface definition')

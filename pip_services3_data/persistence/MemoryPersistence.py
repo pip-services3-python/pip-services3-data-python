@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_data.persistence.MemoryPersistence
+    pip_services3_data.persistence.MemoryPersistence
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Memory persistence implementation
@@ -12,11 +12,11 @@
 import random
 import threading
 
-from pip_services_commons.refer import IReferenceable
-from pip_services_commons.config import IReconfigurable
-from pip_services_commons.run import IOpenable, IClosable, ICleanable
-from pip_services_components.log import CompositeLogger
-from pip_services_commons.data import PagingParams, DataPage, IdGenerator
+from pip_services3_commons.refer import IReferenceable
+from pip_services3_commons.config import IReconfigurable
+from pip_services3_commons.run import IOpenable, IClosable, ICleanable
+from pip_services3_components.log import CompositeLogger
+from pip_services3_commons.data import PagingParams, DataPage, IdGenerator
 
 class MemoryPersistence(IReferenceable, IOpenable, ICleanable):
     """

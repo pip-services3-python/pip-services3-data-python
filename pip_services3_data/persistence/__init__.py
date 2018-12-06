@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_data.persistence.__init__
+    pip_services3_data.persistence.__init__
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Contains various persistence implementations (InMemory and File –persistences). These are

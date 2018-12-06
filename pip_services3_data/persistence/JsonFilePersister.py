@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_data.persistence.JsonFilePersister
+    pip_services3_data.persistence.JsonFilePersister
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     JSON file persister implementation
@@ -12,8 +12,8 @@
 import json
 import os
 
-from pip_services_commons.config import IConfigurable
-from pip_services_commons.errors import ConfigException, FileException
+from pip_services3_commons.config import IConfigurable
+from pip_services3_commons.errors import ConfigException, FileException
 
 from ..ILoader import ILoader
 from ..ISaver import ISaver

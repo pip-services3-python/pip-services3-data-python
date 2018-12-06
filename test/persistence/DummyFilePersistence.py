@@ -9,7 +9,7 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services_data.persistence import JsonFilePersister
+from pip_services3_data.persistence import JsonFilePersister
 from ..persistence.DummyMemoryPersistence import DummyMemoryPersistence
 
 class DummyFilePersistence(DummyMemoryPersistence):
