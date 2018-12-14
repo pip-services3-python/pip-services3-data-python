@@ -1,7 +1,0 @@
-pip\_services\_data.ISaver module
-=================================
-
-.. automodule:: pip_services_data.ISaver
-    :members:
-    :undoc-members:
-    :show-inheritance:

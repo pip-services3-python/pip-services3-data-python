@@ -1,7 +1,0 @@
-pip\_services\_data.persistence.FilePersistence module
-======================================================
-
-.. automodule:: pip_services_data.persistence.FilePersistence
-    :members:
-    :undoc-members:
-    :show-inheritance:

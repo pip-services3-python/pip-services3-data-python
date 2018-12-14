@@ -1,0 +1,7 @@
+pip\_services3\_data.ISetter module
+===================================
+
+.. automodule:: pip_services3_data.ISetter
+    :members:
+    :undoc-members:
+    :show-inheritance:

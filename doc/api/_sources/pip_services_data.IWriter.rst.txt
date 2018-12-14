@@ -1,7 +1,0 @@
-pip\_services\_data.IWriter module
-==================================
-
-.. automodule:: pip_services_data.IWriter
-    :members:
-    :undoc-members:
-    :show-inheritance:

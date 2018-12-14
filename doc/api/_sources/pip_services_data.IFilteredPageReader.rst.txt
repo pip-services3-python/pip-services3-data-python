@@ -1,7 +1,0 @@
-pip\_services\_data.IFilteredPageReader module
-==============================================
-
-.. automodule:: pip_services_data.IFilteredPageReader
-    :members:
-    :undoc-members:
-    :show-inheritance:

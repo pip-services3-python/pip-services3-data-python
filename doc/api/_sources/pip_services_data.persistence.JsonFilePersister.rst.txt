@@ -1,7 +1,0 @@
-pip\_services\_data.persistence.JsonFilePersister module
-========================================================
-
-.. automodule:: pip_services_data.persistence.JsonFilePersister
-    :members:
-    :undoc-members:
-    :show-inheritance:

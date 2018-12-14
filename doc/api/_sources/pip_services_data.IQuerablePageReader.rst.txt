@@ -1,7 +1,0 @@
-pip\_services\_data.IQuerablePageReader module
-==============================================
-
-.. automodule:: pip_services_data.IQuerablePageReader
-    :members:
-    :undoc-members:
-    :show-inheritance:
