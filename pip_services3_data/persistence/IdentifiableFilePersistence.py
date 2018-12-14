@@ -15,14 +15,15 @@ from .JsonFilePersister import JsonFilePersister
 class IdentifiableFilePersistence(IdentifiableMemoryPersistence):
     """
     Abstract persistence component that stores data in flat files
-    and implements a number of CRUD operations over data items with unique ids.
-    The data items must implement IIdentifiable interface.
+    and implements a number of CRUD operations over data items with
+    unique ids. The data items must implement IIdentifiable interface.
 
-    In basic scenarios child classes shall only override [[getPageByFilter]],
-    [[getListByFilter]] or [[deleteByFilter]] operations with specific filter function.
-    All other operations can be used out of the box.
-    In complex scenarios child classes can implement additional operations by
-    accessing cached items via this._items property and calling [[save]] method on updates.
+    In basic scenarios child classes shall only override
+    [[getPageByFilter]], [[getListByFilter]] or [[deleteByFilter]]
+    operations with specific filter function. All other operations can be
+    used out of the box. In complex scenarios child classes can implement
+    additional operations by accessing cached items via this._items
+    property and calling [[save]] method on updates.
 
     ### Configuration parameters ###
 

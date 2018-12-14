@@ -3,6 +3,8 @@
     pip_services3_data.persistence.__init__
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    Pip-services-data.persistence initialisation.
+
     Contains various persistence implementations (InMemory
     and File –persistences). These are"abstract" persistences,
     which only connect to data sources and do not implement the operations

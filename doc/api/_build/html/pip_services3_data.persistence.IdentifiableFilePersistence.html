@@ -68,13 +68,14 @@
 <em class="property">class </em><code class="descclassname">pip_services3_data.persistence.IdentifiableFilePersistence.</code><code class="descname">IdentifiableFilePersistence</code><span class="sig-paren">(</span><em>persister</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.IdentifiableFilePersistence.IdentifiableFilePersistence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pip_services3_data.persistence.IdentifiableMemoryPersistence.html#pip_services3_data.persistence.IdentifiableMemoryPersistence.IdentifiableMemoryPersistence" title="pip_services3_data.persistence.IdentifiableMemoryPersistence.IdentifiableMemoryPersistence"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_data.persistence.IdentifiableMemoryPersistence.IdentifiableMemoryPersistence</span></code></a></p>
 <p>Abstract persistence component that stores data in flat files
-and implements a number of CRUD operations over data items with unique ids.
-The data items must implement IIdentifiable interface.</p>
-<p>In basic scenarios child classes shall only override [[getPageByFilter]],
-[[getListByFilter]] or [[deleteByFilter]] operations with specific filter function.
-All other operations can be used out of the box.
-In complex scenarios child classes can implement additional operations by
-accessing cached items via this._items property and calling [[save]] method on updates.</p>
+and implements a number of CRUD operations over data items with
+unique ids. The data items must implement IIdentifiable interface.</p>
+<p>In basic scenarios child classes shall only override
+[[getPageByFilter]], [[getListByFilter]] or [[deleteByFilter]]
+operations with specific filter function. All other operations can be
+used out of the box. In complex scenarios child classes can implement
+additional operations by accessing cached items via this._items
+property and calling [[save]] method on updates.</p>
 <p>### Configuration parameters ###</p>
 <blockquote>
 <div><ul class="simple">
