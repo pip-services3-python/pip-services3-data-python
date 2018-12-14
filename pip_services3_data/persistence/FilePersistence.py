@@ -3,7 +3,7 @@
     pip_services3_data.persistence.FilePersistence
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
-    File persistence implementation
+    File persistence implementation.
     
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
@@ -15,7 +15,8 @@ from .JsonFilePersister import JsonFilePersister
 
 class FilePersistence(MemoryPersistence, IConfigurable):
     """
-    Abstract persistence component that stores data in flat files and caches them in memory.
+    Abstract persistence component that stores data in flat files
+    and caches them in memory.
 
     This is the most basic persistence component that is only
     able to store data items of any type. Specific CRUD operations
