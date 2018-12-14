@@ -12,7 +12,8 @@ Submodules
 ----------
 
 .. toctree::
-
+   
+   pip_services3_data.persistence
    pip_services3_data.IFilteredPageReader
    pip_services3_data.IFilteredReader
    pip_services3_data.IGetter
