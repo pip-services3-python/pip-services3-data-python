@@ -1,0 +1,7 @@
+pip\_services3\_data.IQuerableReader module
+===========================================
+
+.. automodule:: pip_services3_data.IQuerableReader
+    :members:
+    :undoc-members:
+    :show-inheritance:
