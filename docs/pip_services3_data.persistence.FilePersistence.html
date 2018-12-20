@@ -72,7 +72,7 @@ and caches them in memory.</p>
 <p>This is the most basic persistence component that is only
 able to store data items of any type. Specific CRUD operations
 over the data items must be implemented in child classes by
-accessing this._items property and calling [[save]] method.</p>
+accessing <i>self._items</i> property and calling <i>save</i> method.</p>
 <p>### Configuration parameters ###</p>
 <blockquote>
 <div><ul class="simple">
@@ -83,8 +83,7 @@ accessing this._items property and calling [[save]] method.</p>
 <dt>### References ###</dt>
 <dd><ul class="first last simple">
 <li><dl class="first docutils">
-<dt><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0   (optional) ILogger components</dt>
-<dd>to pass log messages</dd>
+<dt><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0   (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.log.ILogger.html">ILogger</a> components to pass log messages</dd>
 </dl>
 </li>
 </ul>
@@ -97,8 +96,8 @@ accessing this._items property and calling [[save]] method.</p>
 <dd>super(MyJsonFilePersistence, self).__init__(JsonPersister(path))</dd>
 <dt>def get_by_name(self, correlationId, name):</dt>
 <dd>item = self.find(name)
-…
-return item</dd>
+<dd>…
+<dd>return item</dd>
 </dl>
 </dd>
 </dl>

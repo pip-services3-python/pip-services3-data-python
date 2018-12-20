@@ -71,11 +71,11 @@
 and implements a number of CRUD operations over data items with
 unique ids. The data items must implement IIdentifiable interface.</p>
 <p>In basic scenarios child classes shall only override
-[[getPageByFilter]], [[getListByFilter]] or [[deleteByFilter]]
+<i>getPageByFilter</i>, <i>getListByFilter</i> or <i>deleteByFilter</i>
 operations with specific filter function. All other operations can be
 used out of the box. In complex scenarios child classes can implement
 additional operations by accessing cached items via this._items
-property and calling [[save]] method on updates.</p>
+property and calling <i>save</i> method on updates.</p>
 <p>### Configuration parameters ###</p>
 <blockquote>
 <div><ul class="simple">
@@ -109,9 +109,9 @@ property and calling [[save]] method on updates.</p>
 <p>persistence = MyFilePersistence(“./data/data.json”)</p>
 <p>item = persistence.create(“123”, MyData(“1”, “ABC”))</p>
 <p>mydata = persistence.get_page_by_filter(“123”, FilterParams.from_tuples(“name”, “ABC”), None, None)
-print str(mydata.get_data())</p>
+<dd>print str(mydata.get_data())</p>
 <p class="last">persistence.delete_by_id(“123”, “1”)
-…</p>
+<dd>…</p>
 </dd>
 </dl>
 </dd>

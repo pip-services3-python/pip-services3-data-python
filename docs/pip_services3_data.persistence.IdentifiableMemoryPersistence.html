@@ -72,12 +72,12 @@ and implements a number of CRUD operations over data items
 with unique ids. The data items must implement IIdentifiable
 interface.</p>
 <p>In basic scenarios child classes shall only override
-[[getPageByFilter]], [[getListByFilter]] or [[deleteByFilter]]
+<a href="pip_services3_data.persistence.IdentifiableMemoryPersistence.html#pip_services3_data.persistence.IdentifiableMemoryPersistence.IdentifiableMemoryPersistence.get_page_by_filter">getPageByFilter</a>, <a href="pip_services3_data.persistence.IdentifiableMemoryPersistence.html#pip_services3_data.persistence.IdentifiableMemoryPersistence.IdentifiableMemoryPersistence.get_list_by_filter">getListByFilter</a> or <a href="pip_services3_data.persistence.IdentifiableMemoryPersistence.html#pip_services3_data.persistence.IdentifiableMemoryPersistence.IdentifiableMemoryPersistence.delete_by_filter">deleteByFilter</a>
 operations with specific filter function. All other operations
 can be used out of the box.</p>
 <p>In complex scenarios child classes can implement additional
-operations by accessing cached items via this._items property
-and calling [[save]] method on updates.</p>
+operations by accessing cached items via <i>self._items</i> property
+and calling <i>save</i> method on updates.</p>
 <p>### Configuration parameters ###</p>
 <blockquote>
 <div><ul class="simple">
@@ -108,9 +108,9 @@ and calling [[save]] method on updates.</p>
 <p>persistence = MyMemoryPersistence(“./data/data.json”)</p>
 <p>item = persistence.create(“123”, MyData(“1”, “ABC”))</p>
 <p>mydata = persistence.get_page_by_filter(“123”, FilterParams.from_tuples(“name”, “ABC”), None, None)
-print str(mydata.get_data())</p>
+<p>print str(mydata.get_data())</p>
 <p>persistence.delete_by_id(“123”, “1”)
-…</p>
+<dd>…</p>
 </div></blockquote>
 </dd>
 </dl>

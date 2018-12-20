@@ -71,8 +71,8 @@
 <p>This is the most basic persistence component that is only
 able to store data items of any type. Specific CRUD operations
 over the data items must be implemented in child classes by
-accessing &lt;code&gt;this._items&lt;/code&gt; property and calling
-[[save]] method.</p>
+accessing <i>self._items</i> property and calling
+<i>save</i> method.</p>
 <p>The component supports loading and saving items from another
 data source. That allows to use it as a base class for file
 and other types of persistence components that cache all data
@@ -95,7 +95,7 @@ return item</dd>
 </div></blockquote>
 <p>persistence = MyMemoryPersistence()</p>
 <p class="last">persistence.set(“123”, MyData(“ABC”))
-print str(persistence.get_by_name(“123”, “ABC”)))</p>
+<p>print str(persistence.get_by_name(“123”, “ABC”)))</p>
 </dd>
 </dl>
 <dl class="method">

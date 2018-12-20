@@ -68,7 +68,7 @@
 <em class="property">class </em><code class="descclassname">pip_services3_data.persistence.JsonFilePersister.</code><code class="descname">JsonFilePersister</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.JsonFilePersister.JsonFilePersister" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pip_services3_data.ILoader.html#pip_services3_data.ILoader.ILoader" title="pip_services3_data.ILoader.ILoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_data.ILoader.ILoader</span></code></a>, <a class="reference internal" href="pip_services3_data.ISaver.html#pip_services3_data.ISaver.ISaver" title="pip_services3_data.ISaver.ISaver"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_data.ISaver.ISaver</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code></p>
 <p>Persistence component that loads and saves data from/to flat file.</p>
-<p>It is used by [[FilePersistence]], but can be useful on its own.</p>
+<p>It is used by <a href="pip_services3_data.persistence.FilePersistence.html">FilePersistence</a>, but can be useful on its own.</p>
 <p>### Configuration parameters ###</p>
 <blockquote>
 <div><ul class="simple">
@@ -79,9 +79,9 @@
 <dt>Example:</dt>
 <dd><p class="first">persister = JsonFilePersister(MyData.class, “./data/data.json”)</p>
 <p>persister.save(“123”, [“A”, “B”, “C”])
-…</p>
+<p>…</p>
 <p class="last">persister.load(“123”, items)
-print items</p>
+<p>print items</p>
 </dd>
 </dl>
 <dl class="method">

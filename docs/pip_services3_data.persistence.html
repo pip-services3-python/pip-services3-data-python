@@ -80,7 +80,6 @@
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pip_services3_data.persistence" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="pip-services3-data-persistence-init">
 <h3>pip_services3_data.persistence.__init__<a class="headerlink" href="#pip-services3-data-persistence-init" title="Permalink to this headline">¶</a></h3>
-<p>Pip-services-data.persistence initialisation.</p>
 <p>Contains various persistence implementations (InMemory
 and File –persistences). These are”abstract” persistences,
 which only connect to data sources and do not implement the operations
@@ -109,8 +108,8 @@ and deleting records of objects.</p>
 <p>This is the most basic persistence component that is only
 able to store data items of any type. Specific CRUD operations
 over the data items must be implemented in child classes by
-accessing &lt;code&gt;this._items&lt;/code&gt; property and calling
-[[save]] method.</p>
+accessing <i>self._items</i> property and calling
+<i>save()</i> method.</p>
 <p>The component supports loading and saving items from another
 data source. That allows to use it as a base class for file
 and other types of persistence components that cache all data
@@ -133,7 +132,7 @@ return item</dd>
 </div></blockquote>
 <p>persistence = MyMemoryPersistence()</p>
 <p class="last">persistence.set(“123”, MyData(“ABC”))
-print str(persistence.get_by_name(“123”, “ABC”)))</p>
+<dd>print str(persistence.get_by_name(“123”, “ABC”)))</p>
 </dd>
 </dl>
 <dl class="method">
@@ -236,12 +235,12 @@ and implements a number of CRUD operations over data items
 with unique ids. The data items must implement IIdentifiable
 interface.</p>
 <p>In basic scenarios child classes shall only override
-[[getPageByFilter]], [[getListByFilter]] or [[deleteByFilter]]
+<i>getPageByFilter</i>, <i>getListByFilter</i> or <i>deleteByFilter</i>
 operations with specific filter function. All other operations
 can be used out of the box.</p>
 <p>In complex scenarios child classes can implement additional
 operations by accessing cached items via this._items property
-and calling [[save]] method on updates.</p>
+and calling <i>save</i> method on updates.</p>
 <p>### Configuration parameters ###</p>
 <blockquote>
 <div><ul class="simple">
@@ -558,7 +557,7 @@ and caches them in memory.</p>
 <p>This is the most basic persistence component that is only
 able to store data items of any type. Specific CRUD operations
 over the data items must be implemented in child classes by
-accessing this._items property and calling [[save]] method.</p>
+accessing this._items property and calling <i>save</i> method.</p>
 <p>### Configuration parameters ###</p>
 <blockquote>
 <div><ul class="simple">
@@ -614,11 +613,11 @@ return item</dd>
 and implements a number of CRUD operations over data items with
 unique ids. The data items must implement IIdentifiable interface.</p>
 <p>In basic scenarios child classes shall only override
-[[getPageByFilter]], [[getListByFilter]] or [[deleteByFilter]]
+<i>getPageByFilter</i>, <i>getListByFilter</i> or <i>deleteByFilter</i>
 operations with specific filter function. All other operations can be
 used out of the box. In complex scenarios child classes can implement
 additional operations by accessing cached items via this._items
-property and calling [[save]] method on updates.</p>
+property and calling <i>save</i> method on updates.</p>
 <p>### Configuration parameters ###</p>
 <blockquote>
 <div><ul class="simple">
@@ -680,7 +679,7 @@ print str(mydata.get_data())</p>
 <em class="property">class </em><code class="descclassname">pip_services3_data.persistence.</code><code class="descname">JsonFilePersister</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.JsonFilePersister" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pip_services3_data.ILoader.html#pip_services3_data.ILoader.ILoader" title="pip_services3_data.ILoader.ILoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_data.ILoader.ILoader</span></code></a>, <a class="reference internal" href="pip_services3_data.ISaver.html#pip_services3_data.ISaver.ISaver" title="pip_services3_data.ISaver.ISaver"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_data.ISaver.ISaver</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code></p>
 <p>Persistence component that loads and saves data from/to flat file.</p>
-<p>It is used by [[FilePersistence]], but can be useful on its own.</p>
+<p>It is used by <a href="pip_services3_data.persistence.FilePersistence.html">FilePersistence</a>, but can be useful on its own.</p>
 <p>### Configuration parameters ###</p>
 <blockquote>
 <div><ul class="simple">
