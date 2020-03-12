@@ -18,6 +18,7 @@ from pip_services3_commons.errors import ConfigException, FileException
 from ..ILoader import ILoader
 from ..ISaver import ISaver
 
+
 class JsonFilePersister(ILoader, ISaver, IConfigurable):
     """
     Persistence component that loads and saves data from/to flat file.
@@ -39,7 +40,7 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
     """
     path = None
 
-    def __init__(self, path = None):
+    def __init__(self, path=None):
         """
         Creates a new instance of the persistence.
 
@@ -53,10 +54,12 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
 
         :param config: configuration parameters to be set.
         """
-        if config == None or not config.contains_key("path"):
-            raise ConfigException(None, "NO_PATH", "Data file path is not set")
+        try:
+            if config is not None or config.contains_key("path"):
+                self.path = config.get_as_string("path")
 
-        self.path = config.get_as_string("path")
+        except AttributeError:
+            raise ConfigException(None, "NO_PATH", "Data file path is not set")
 
     def load(self, correlation_id):
         """
