@@ -14,8 +14,9 @@ from pip_services3_data.persistence import IdentifiableMemoryPersistence
 from ..IDummyPersistence import IDummyPersistence
 from pip_services3_data import IGetter, IWriter, IPartialUpdater
 
+
 class DummyMemoryPersistence(IdentifiableMemoryPersistence, IPartialUpdater):
-    
+
     def __init__(self):
         super(DummyMemoryPersistence, self).__init__()
 
@@ -27,5 +28,5 @@ class DummyMemoryPersistence(IdentifiableMemoryPersistence, IPartialUpdater):
             if key != None and obj['key'] != key:
                 return False
             return True
-            
+
         return super(DummyMemoryPersistence, self).get_page_by_filter(correlation_id, filter_dummy, paging=paging)

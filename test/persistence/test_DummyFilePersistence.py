@@ -12,8 +12,9 @@
 from .DummyFilePersistence import DummyFilePersistence
 from ..DummyPersistenceFixture import DummyPersistenceFixture
 
+
 class TestDummyFilePersistence:
-    
+
     @classmethod
     def setup_class(cls):
         cls.persistence = DummyFilePersistence("./data/dummies.json")
@@ -21,7 +22,7 @@ class TestDummyFilePersistence:
 
     def setup_method(self, method):
         self.persistence.clear(None)
-    
+
     def test_crud_operations(self):
         self.fixture.test_crud_operations()
 
