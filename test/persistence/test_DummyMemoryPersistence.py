@@ -12,8 +12,9 @@
 from .DummyMemoryPersistence import DummyMemoryPersistence
 from ..DummyPersistenceFixture import DummyPersistenceFixture
 
+
 class TestDummyMemoryPersistence:
-    
+
     @classmethod
     def setup_class(cls):
         cls.persistence = DummyMemoryPersistence()
@@ -21,7 +22,7 @@ class TestDummyMemoryPersistence:
 
     def setup_method(self, method):
         self.persistence.clear(None)
-    
+
     def test_crud_operations(self):
         self.fixture.test_crud_operations()
 
