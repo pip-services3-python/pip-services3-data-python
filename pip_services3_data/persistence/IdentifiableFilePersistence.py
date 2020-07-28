@@ -61,8 +61,8 @@ class IdentifiableFilePersistence(IdentifiableMemoryPersistence):
 
         :param persister: (optional) a persister component that loads and saves data from/to flat file.
         """
-        super(IdentifiableFilePersistence, self).__init__(persister if persister != None else JsonFilePersister(),
-                                                          persister if persister != None else JsonFilePersister())
+        super(IdentifiableFilePersistence, self).__init__(persister if not (persister is None) else JsonFilePersister(),
+                                                          persister if not (persister is None) else JsonFilePersister())
 
 
         self._persister = persister

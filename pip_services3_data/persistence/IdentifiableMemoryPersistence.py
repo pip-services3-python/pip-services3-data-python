@@ -8,15 +8,13 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
-
-import random
+ 
 import threading
 
 from pip_services3_commons.refer import IReferenceable
-from pip_services3_commons.config import IConfigurable
 from pip_services3_commons.run import IOpenable, IClosable, ICleanable
 from pip_services3_components.log import CompositeLogger
-from pip_services3_commons.data import PagingParams, DataPage, IdGenerator
+from pip_services3_commons.data import IdGenerator
 from ..IWriter import IWriter
 from ..IGetter import IGetter
 from ..ISetter import ISetter
@@ -26,7 +24,7 @@ from .MemoryPersistence import MemoryPersistence
 # This function will be overriden in the code
 filtered = filter
 
-class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, IGetter, ISetter):
+class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter):
     """
     Abstract persistence component that stores data in memory
     and implements a number of CRUD operations over data items
@@ -79,104 +77,6 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
         """
         super(IdentifiableMemoryPersistence, self).__init__(loader, saver)
 
-    def configure(self, config):
-        """
-        Configures component by passing configuration parameters.
-
-        :param config: configuration parameters to be set.
-        """
-        self._max_page_size = config.get_as_integer_with_default("options.max_page_size", self._max_page_size)
-
-
-    def get_page_by_filter(self, correlation_id, filter, paging, sort = None, select = None):
-        """
-        Gets a page of data items retrieved by a given filter and sorted according to sort parameters.
-
-        This method shall be called by a public getPageByFilter method from child class that
-        receives FilterParams and converts them into a filter function.
-
-        :param correlation_id: (optional) transaction id to trace execution through call chain.
-
-        :param filter: (optional) a filter function to filter items
-
-        :param paging: (optional) paging parameters
-
-        :param sort: (optional) sorting parameters
-
-        :param select: (optional) projection parameters (not used yet)
-
-        :return: a data page of result by filter.
-        """
-        self._lock.acquire()
-        try:
-            items = list(self._items)
-        finally:
-            self._lock.release()
-            
-        # Filter and sort
-        if filter != None:
-            items = list(filtered(filter, items))
-        if sort != None:
-            items = list(items.sort(key=sort))
-            # items = sorted(items, sort)
-
-        # Prepare paging parameters
-        paging = paging if paging != None else PagingParams()
-        skip = paging.get_skip(-1)
-        take = paging.get_take(self._max_page_size)
-        
-        # Get a page
-        data = items
-        if skip > 0:
-            data = data[skip:]
-        if take > 0:
-            data = data[:take+1]
-                
-        # Convert values
-        if select != None:
-            data = map(select, data)
-                
-        self._logger.trace(correlation_id, "Retrieved " + str(len(data)) + " items")
-
-        # Return a page
-        return DataPage(data, len(items))
-
-
-    def get_list_by_filter(self, correlation_id, filter, sort = None, select = None):
-        """
-        Gets a list of data items retrieved by a given filter and sorted according to sort parameters.
-
-        This method shall be called by a public getListByFilter method from child class that
-        receives FilterParams and converts them into a filter function.
-
-        :param correlation_id: (optional) transaction id to trace execution through call chain.
-
-        :param filter: (optional) a filter function to filter items
-
-        :param sort: (optional) sorting parameters
-
-        :param select: (optional) projection parameters (not used yet)
-
-        :return: a data list of results by filter.
-        """
-        self._lock.acquire()
-        try:
-            items = list(self._items)
-        finally:
-            self._lock.release()
-
-        # Filter and sort
-        if filter != None:
-            items = list(filtered(filter, items))
-        if sort != None:
-            items = list(sorted(items, key=sort))
-                        
-        # Convert values      
-        if select != None:
-            items = map(select, items)
-                
-        # Return a list
-        return list(items)
 
     def get_list_by_ids(self, correlation_id, ids):
         """
@@ -194,14 +94,14 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
         return self.get_list_by_filter(correlation_id, filter)
 
 
-    def _find_one(self, id):
+    def _find_one(self, id: str):
         for item in self._items:
             if item['id'] == id:
                 return item
         return None
 
 
-    def get_one_by_id(self, correlation_id, id):
+    def get_one_by_id(self, correlation_id: str, id: str):
         """
         Gets a data item by its unique id.
 
@@ -217,39 +117,10 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
         finally:
             self._lock.release()
 
-        if item != None:
+        if not (item is None):
             self._logger.trace(correlation_id, "Retrieved " + str(item) + " by " + str(id))
         else:
             self._logger.trace(correlation_id, "Cannot find item by " + str(id))
-        return item
-
-
-    def get_one_random(self, correlation_id):
-        """
-        Gets a random item from items that match to a given filter.
-
-        This method shall be called by a public getOneRandom method from child class
-        that receives FilterParams and converts them into a filter function.
-
-        :param correlation_id: (optional) transaction id to trace execution through call chain.
-
-        :return: a random item.
-        """
-        self._lock.acquire()
-        try:
-            if len(self._items) == 0:
-                return None
-
-            index = random.randint(0, len(self._items))
-            item = self._items[index]
-        finally:
-            self._lock.release()
-            
-        if item != None:
-            self._logger.trace(correlation_id, "Retrieved a random item")
-        else:
-            self._logger.trace(correlation_id, "Nothing to return as random item")
-                        
         return item
 
 
@@ -263,20 +134,10 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
         :return: a created item
         """
-        if 'id' not in item or item['id'] == None:
+        if 'id' not in item or item['id'] is None:
             item['id'] = IdGenerator.next_long()
 
-        self._lock.acquire()
-        try:
-            self._items.append(item)
-        finally:
-            self._lock.release()
-
-        self._logger.trace(correlation_id, "Created " + str(item))
-
-        # Avoid reentry
-        self.save(correlation_id)
-        return item
+        return super().create(correlation_id, item)
 
 
     def set(self, correlation_id, item):
@@ -402,34 +263,6 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IConfigurable, IWriter, I
 
         self.save(correlation_id)
         return item
-
-
-    def delete_by_filter(self, correlation_id, filter):
-        """
-        Deletes data items that match to a given filter.
-
-        This method shall be called by a public deleteByFilter method from child class that
-        receives FilterParams and converts them into a filter function.
-
-        :param correlation_id: (optional) transaction id to trace execution through call chain.
-
-        :param filter: (optional) a filter function to filter items.
-        """
-        def negative_filter(item):
-            return not filter(item)
-
-        old_length = len(list(self._items))
-
-        self._lock.acquire()
-        try:
-            self._items = list(filtered(negative_filter, self._items))
-        finally:
-            self._lock.release()
-        deleted = old_length - len(list(self._items))
-        self._logger.trace(correlation_id, "Deleted " + str(deleted) + " items")
-
-        if (deleted > 0):
-            self.save(correlation_id)
 
 
     def delete_by_ids(self, correlation_id, ids):

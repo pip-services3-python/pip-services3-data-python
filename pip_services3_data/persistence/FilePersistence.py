@@ -49,8 +49,8 @@ class FilePersistence(MemoryPersistence, IConfigurable):
 
         :param persister: (optional) a persister component that loads and saves data from/to flat file.
         """
-        super(FilePersistence, self).__init__(persister if persister != None else JsonFilePersister(),
-                                              persister if persister != None else JsonFilePersister())
+        super(FilePersistence, self).__init__(persister if not (persister is None) else JsonFilePersister(),
+                                              persister if not (persister is None) else JsonFilePersister())
 
         self._persister = persister
         # self._saver = self._persister
