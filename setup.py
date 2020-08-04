@@ -18,7 +18,7 @@ from setuptools import find_packages
 
 setup(
     name='pip_services3_data',
-    version='3.0.3',
+    version='3.1.0',
     url='http://github.com/pip-services3-python/pip-services3-data-python',
     license='MIT',
     author='Conceptual Vision Consulting LLC',
@@ -30,7 +30,7 @@ setup(
     zip_safe=True,
     platforms='any',
     install_requires=[
-        'iso8601', 'PyYAML', 'pip_services3_commons', 'pip_services3_components'
+        'iso8601', 'PyYAML', 'pystache', 'pytest', 'numpy', 'pytz', 'pymongo', 'pip_services3_commons', 'pip_services3_components'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -44,3 +44,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]    
 )
+ 
+ 
+
+ 
