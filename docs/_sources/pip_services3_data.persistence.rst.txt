@@ -5,6 +5,7 @@ Submodules
 ----------
 
 .. toctree::
+   :maxdepth: 4
 
    pip_services3_data.persistence.FilePersistence
    pip_services3_data.persistence.IdentifiableFilePersistence
@@ -16,6 +17,6 @@ Module contents
 ---------------
 
 .. automodule:: pip_services3_data.persistence
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

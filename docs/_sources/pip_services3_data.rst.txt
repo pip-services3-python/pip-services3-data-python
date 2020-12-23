@@ -5,13 +5,15 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 4
 
-    pip_services3_data.persistence
+   pip_services3_data.persistence
 
 Submodules
 ----------
 
 .. toctree::
+   :maxdepth: 4
 
    pip_services3_data.IFilteredPageReader
    pip_services3_data.IFilteredReader
@@ -28,6 +30,6 @@ Module contents
 ---------------
 
 .. automodule:: pip_services3_data
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
