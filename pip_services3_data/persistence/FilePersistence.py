@@ -21,25 +21,26 @@ class FilePersistence(MemoryPersistence, IConfigurable):
     This is the most basic persistence component that is only
     able to store data items of any type. Specific CRUD operations
     over the data items must be implemented in child classes by
-    accessing this._items property and calling [[save]] method.
+    accessing self._items property and calling :func:save method.
 
     ### Configuration parameters ###
-
         - path:                path to the file where data is stored
 
     ### References ###
-        - *:logger:*:*:1.0   (optional) ILogger components
-                              to pass log messages
+        - *:logger:*:*:1.0   (optional) ILogger components to pass log messages
 
     Example:
-        class MyJsonFilePersistence(FilePersistence):
-            def __init__(self, path):
-                super(MyJsonFilePersistence, self).__init__(JsonPersister(path))
 
-            def get_by_name(self, correlationId, name):
-                item = self.find(name)
-                ...
-                return item
+    .. code-block:: python
+
+       class MyJsonFilePersistence(FilePersistence):
+           def __init__(self, path):
+               super(MyJsonFilePersistence, self).__init__(JsonPersister(path))
+
+           def get_by_name(self, correlationId, name):
+               item = self.find(name)
+               ...
+               return item
     """
     _persister = None
 

@@ -23,13 +23,15 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
     """
     Persistence component that loads and saves data from/to flat file.
 
-    It is used by [[FilePersistence]], but can be useful on its own.
+    It is used by :class:`FilePersistence`, but can be useful on its own.
 
     ### Configuration parameters ###
-
         - path:          path to the file where data is stored
 
     Example:
+
+    .. code-block:: python
+    
         persister = JsonFilePersister(MyData.class, "./data/data.json")
 
         persister.save("123", ["A", "B", "C"])

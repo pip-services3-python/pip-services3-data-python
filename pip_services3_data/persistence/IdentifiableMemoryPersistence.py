@@ -32,24 +32,25 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
     interface.
 
     In basic scenarios child classes shall only override
-    [[getPageByFilter]], [[getListByFilter]] or [[deleteByFilter]]
+    :func:`get_page_by_filter`, :func:`get_list_by_filter` or :func:`delete_by_filter`
     operations with specific filter function. All other operations
     can be used out of the box.
 
     In complex scenarios child classes can implement additional
     operations by accessing cached items via this._items property
-    and calling [[save]] method on updates.
+    and calling :func:`save` method on updates.
 
     ### Configuration parameters ###
-
         - options:
             - max_page_size:       Maximum number of items returned in a single page (default: 100)
 
     ### References ###
-
         - *:logger:*:*:1.0       (optional) ILogger components to pass log messages
 
     Example:
+
+    .. code-block:: python
+
         class MyMemoryPersistence(IdentifiableMemoryPersistence):
 
             def get_page_by_filter(self, correlationId, filter, paging):
@@ -63,7 +64,6 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
             print str(mydata.get_data())
 
             persistence.delete_by_id("123", "1")
-            ...
     """
     _max_page_size = 100
 

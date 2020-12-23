@@ -29,8 +29,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
     This is the most basic persistence component that is only
     able to store data items of any type. Specific CRUD operations
     over the data items must be implemented in child classes by
-    accessing <code>this._items</code> property and calling
-    [[save]] method.
+    accessing :func:`self._items` property and calling
+    :func:`save` method.
 
     The component supports loading and saving items from another
     data source. That allows to use it as a base class for file
@@ -41,6 +41,9 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         - *:logger:*:*:1.0   (optional) ILogger components to pass log messages
 
     Example:
+
+    .. code-block:: python
+    
         class MyMemoryPersistence(MemoryPersistence):
 
             def get_by_name(self, correlationId, name):
@@ -205,7 +208,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         """
         Gets a page of data items retrieved by a given filter and sorted according to sort parameters.
 
-        This method shall be called by a public getPageByFilter method from child class that
+        This method shall be called by a public :func:`get_page_by_filter` method from child class that
         receives FilterParams and converts them into a filter function.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
@@ -259,8 +262,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         """
         Gets a list of data items retrieved by a given filter and sorted according to sort parameters.
 
-        This method shall be called by a public getListByFilter method from child class that
-        receives FilterParams and converts them into a filter function.
+        This method shall be called by a public :func:`get_list_by_filter` method from child class that
+        receives :class:`FilterParams` and converts them into a filter function.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
 
@@ -313,8 +316,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         """
         Gets a random item from items that match to a given filter.
 
-        This method shall be called by a public getOneRandom method from child class
-        that receives FilterParams and converts them into a filter function.
+        This method shall be called by a public :func:`get_one_random` method from child class
+        that receives :class:`FilterParams` and converts them into a filter function.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
 
@@ -342,8 +345,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         """
         Deletes data items that match to a given filter.
 
-        This method shall be called by a public deleteByFilter method from child class that
-        receives FilterParams and converts them into a filter function.
+        This method shall be called by a public :func:`delete_by_filter` method from child class that
+        receives :class:`FilterParams` and converts them into a filter function.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
 
