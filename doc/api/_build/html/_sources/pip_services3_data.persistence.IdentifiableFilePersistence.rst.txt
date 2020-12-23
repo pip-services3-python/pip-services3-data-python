@@ -1,7 +1,0 @@
-pip\_services3\_data.persistence.IdentifiableFilePersistence module
-===================================================================
-
-.. automodule:: pip_services3_data.persistence.IdentifiableFilePersistence
-    :members:
-    :undoc-members:
-    :show-inheritance:

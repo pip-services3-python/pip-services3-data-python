@@ -1,7 +1,0 @@
-pip\_services3\_data.persistence.IdentifiableMemoryPersistence module
-=====================================================================
-
-.. automodule:: pip_services3_data.persistence.IdentifiableMemoryPersistence
-    :members:
-    :undoc-members:
-    :show-inheritance:
