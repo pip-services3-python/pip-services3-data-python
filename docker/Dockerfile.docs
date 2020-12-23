@@ -1,0 +1,22 @@
+FROM python:3
+
+COPY requirements.txt .
+
+# copy all project
+COPY . .
+
+ARG COMPONENT_NAME
+
+ADD . $COMPONENT_NAME
+
+# RUN pip install -r requirements.txt
+RUN pip install -e .
+RUN pip install -U sphinx
+RUN pip install sphinx-rtd-theme
+
+# docs generation
+RUN sphinx-apidoc -f -e -o build pip_services3_data
+RUN cp conf.py ./build/
+RUN cp index.rst ./build/
+RUN sphinx-build -b html build docs -c .
+RUN rm -rf build
