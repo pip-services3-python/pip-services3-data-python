@@ -1,41 +1,16 @@
-# Data processing and persistence components for Pip.Services in Python Changelog
+# <img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> <br/> Persistence components for Python Changelog
 
-## <a name="3.1.0"></a> 3.1.0 (2020-08-04)
+## <a name="3.0.0-3.1.0"></a> 3.0.0-3.1.0 (2020-08-04)
 
-## <a name="3.0.0"></a> 3.0.0 (2018-10-30)
+### Bug Fixes
+* fixed JsonFilePersister class and add tests
+* Moved methods to MemoryPersistence
 
-### New release
-* Restructuring package
-
-### Features
-- **Persistence** - in-memory and file persistence
-- **Data** - data interfaces
-
-## <a name="2.2.0"></a> 2.2.0 (2017-04-11)
-
-### Features
-* Added getListByIds(), deleteByFilter() and deleteByIds() methods to all Identifiable persistence classes
-
-## <a name="2.0.0"></a> 2.0.0 (2017-02-27)
-
-### Features
-* Added methods for explicit data convertion from and to public representation
-* Added update_partially Method to all persistences
-* Added IPartialUpdater interface
-
-### Breaking Changes
-* Migrated to **pip-services** 2.0
-* Separated code persistence from IdentifiablePersistence classes
-
-## <a name="1.0.0"></a> 1.0.0 (2017-01-28)
+## <a name="3.0.0"></a> 3.0.0 (2018-10-18)
 
 Initial public release
 
 ### Features
-* **memory** Memory persistence
-* **file** Abstract file and JSON persistence
-* **mongodb** MongoDB persistence
-
-### Bug Fixes
-No fixes in this version
+- **Persistence** - in-memory and file persistence
+- **Core** - data interfaces
 
