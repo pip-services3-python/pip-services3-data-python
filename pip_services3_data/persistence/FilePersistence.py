@@ -27,7 +27,7 @@ class FilePersistence(MemoryPersistence, IConfigurable):
         - path:                path to the file where data is stored
 
     ### References ###
-        - *:logger:*:*:1.0   (optional) ILogger components to pass log messages
+        - `*:logger:*:*:1.0`   (optional) ILogger components to pass log messages
 
     Example:
 

@@ -45,7 +45,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
             - max_page_size:       Maximum number of items returned in a single page (default: 100)
 
     ### References ###
-        - *:logger:*:*:1.0       (optional) ILogger components to pass log messages
+        - `*:logger:*:*:1.0`       (optional) ILogger components to pass log messages
 
     Example:
 
