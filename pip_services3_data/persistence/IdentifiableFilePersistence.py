@@ -16,7 +16,7 @@ class IdentifiableFilePersistence(IdentifiableMemoryPersistence):
     """
     Abstract persistence component that stores data in flat files
     and implements a number of CRUD operations over data items with
-    unique ids. The data items must implement :class:`IIdentifiable` interface.
+    unique ids. The data items must implement :class:`IIdentifiable <pip_services3_commons.data.IIdentifiable.IIdentifiable>` interface.
 
     In basic scenarios child classes shall only override
     :func:`get_page_by_filter`, :func:`get_list_by_filter` or :func:`delete_by_filter`
