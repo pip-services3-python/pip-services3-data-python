@@ -30,7 +30,7 @@ setup(
     zip_safe=True,
     platforms='any',
     install_requires=[
-        'iso8601', 'PyYAML', 'pystache', 'pytest', 'numpy', 'pytz', 'pymongo', 'pip_services3_commons', 'pip_services3_components'
+        'iso8601', 'PyYAML', 'pystache', 'pytest', 'pytz', 'pymongo', 'pip_services3_commons', 'pip_services3_components'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
