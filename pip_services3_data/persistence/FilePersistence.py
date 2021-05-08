@@ -8,10 +8,13 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from typing import Optional
 
-from pip_services3_commons.config import IConfigurable
-from .MemoryPersistence import MemoryPersistence
+from pip_services3_commons.config import IConfigurable, ConfigParams
+
 from .JsonFilePersister import JsonFilePersister
+from .MemoryPersistence import MemoryPersistence
+
 
 class FilePersistence(MemoryPersistence, IConfigurable):
     """
@@ -42,9 +45,9 @@ class FilePersistence(MemoryPersistence, IConfigurable):
                ...
                return item
     """
-    _persister = None
+    _persister: JsonFilePersister = None
 
-    def __init__(self, persister):
+    def __init__(self, persister: Optional[JsonFilePersister] = None):
         """
         Creates a new instance of the persistence.
 
@@ -57,7 +60,7 @@ class FilePersistence(MemoryPersistence, IConfigurable):
         # self._saver = self._persister
         # self._loader = self._persister
 
-    def configure(self, config):
+    def configure(self, config: ConfigParams):
         """
         Configures component by passing configuration parameters.
 

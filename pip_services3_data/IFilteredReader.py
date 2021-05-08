@@ -8,12 +8,19 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from abc import ABC
+from typing import List, Optional, Any
 
-class IFilteredReader:
+from pip_services3_commons.data import SortParams, FilterParams
+
+
+class IFilteredReader(ABC):
     """
     Interface for data processing components that can retrieve a list of data items by filter.
     """
-    def get_list_by_filter(self, correlation_id, filter, sort = None):
+
+    def get_list_by_filter(self, correlation_id: Optional[str], filter: Optional[FilterParams],
+                            sort: Optional[SortParams] = None) -> List[Any]:
         """
         Gets a list of data items using filter parameters.
 

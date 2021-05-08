@@ -8,11 +8,16 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from typing import Optional
+
+from pip_services3_commons.config import ConfigParams
+from pip_services3_commons.data import IIdentifiable
 
 from .IdentifiableMemoryPersistence import IdentifiableMemoryPersistence
 from .JsonFilePersister import JsonFilePersister
 
-class IdentifiableFilePersistence(IdentifiableMemoryPersistence):
+
+class IdentifiableFilePersistence(IdentifiableMemoryPersistence, IIdentifiable):
     """
     Abstract persistence component that stores data in flat files
     and implements a number of CRUD operations over data items with
@@ -22,7 +27,7 @@ class IdentifiableFilePersistence(IdentifiableMemoryPersistence):
     :func:`get_page_by_filter`, :func:`get_list_by_filter` or :func:`delete_by_filter`
     operations with specific filter function. All other operations can be
     used out of the box. In complex scenarios child classes can implement
-    additional operations by accessing cached items via this._items
+    additional operations by accessing cached items via self._items
     property and calling :func:`save` method on updates.
 
     ### Configuration parameters ###
@@ -54,9 +59,9 @@ class IdentifiableFilePersistence(IdentifiableMemoryPersistence):
             persistence.delete_by_id("123", "1")
             
     """
-    _persister = None
+    _persister: JsonFilePersister = None
 
-    def __init__(self, persister):
+    def __init__(self, persister: Optional[JsonFilePersister] = None):
         """
         Creates a new instance of the persistence.
 
@@ -65,12 +70,11 @@ class IdentifiableFilePersistence(IdentifiableMemoryPersistence):
         super(IdentifiableFilePersistence, self).__init__(persister if not (persister is None) else JsonFilePersister(),
                                                           persister if not (persister is None) else JsonFilePersister())
 
-
         self._persister = persister
         # self._saver = self._persister
         # self._loader = self._persister
 
-    def configure(self, config):
+    def configure(self, config: ConfigParams):
         """
         Configures component by passing configuration parameters.
 

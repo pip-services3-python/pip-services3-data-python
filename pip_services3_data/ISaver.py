@@ -8,12 +8,15 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from typing import List, Any, Optional
+
 
 class ISaver:
     """
     Interface for data processing components that save data items.
     """
-    def save(self, correlation_id, items):
+
+    def save(self, correlation_id: Optional[str], items: List[Any]):
         """
         Saves given data items.
 

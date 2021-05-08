@@ -8,12 +8,18 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from abc import ABC
+from typing import Optional, Any
 
-class IPartialUpdater:
+from pip_services3_commons.data import AnyValueMap
+
+
+class IPartialUpdater(ABC):
     """
     Interface for data processing components to update data items partially.
     """
-    def update_partially(self, correlation_id, id, data):
+
+    def update_partially(self, correlation_id: Optional[str], id: Any, data: AnyValueMap) -> Any:
         """
         Updates only few selected fields in a data item.
 

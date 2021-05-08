@@ -8,23 +8,23 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
- 
-import threading
+from typing import Optional, Any, List, TypeVar
 
-from pip_services3_commons.refer import IReferenceable
-from pip_services3_commons.run import IOpenable, IClosable, ICleanable
-from pip_services3_components.log import CompositeLogger
-from pip_services3_commons.data import IdGenerator
-from ..IWriter import IWriter
+from pip_services3_commons.data import IdGenerator, IIdentifiable, AnyValueMap
+
+from pip_services3_data import ISaver, ILoader
+from .MemoryPersistence import MemoryPersistence
 from ..IGetter import IGetter
 from ..ISetter import ISetter
-
-from .MemoryPersistence import MemoryPersistence
+from ..IWriter import IWriter
 
 # This function will be overriden in the code
 filtered = filter
 
-class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter):
+T = TypeVar('T')  # Declare type variable
+
+
+class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter, IIdentifiable):
     """
     Abstract persistence component that stores data in memory
     and implements a number of CRUD operations over data items
@@ -65,9 +65,8 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
             persistence.delete_by_id("123", "1")
     """
-    _max_page_size = 100
 
-    def __init__(self, loader = None, saver = None):
+    def __init__(self, loader: ILoader = None, saver: ISaver = None):
         """
         Creates a new instance of the persistence.
 
@@ -77,8 +76,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
         super(IdentifiableMemoryPersistence, self).__init__(loader, saver)
 
-
-    def get_list_by_ids(self, correlation_id, ids):
+    def get_list_by_ids(self, correlation_id: Optional[str], ids: List[Any]) -> List[T]:
         """
         Gets a list of data items retrieved by given unique ids.
 
@@ -88,11 +86,11 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         :return: a data list of results by ids.
         """
+
         def filter(item):
             return item['id'] in ids
 
         return self.get_list_by_filter(correlation_id, filter)
-
 
     def _find_one(self, id: str):
         for item in self._items:
@@ -100,8 +98,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
                 return item
         return None
 
-
-    def get_one_by_id(self, correlation_id: str, id: str):
+    def get_one_by_id(self, correlation_id: Optional[str], id: Any) -> T:
         """
         Gets a data item by its unique id.
 
@@ -123,8 +120,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
             self._logger.trace(correlation_id, "Cannot find item by " + str(id))
         return item
 
-
-    def create(self, correlation_id, item):
+    def create(self, correlation_id: Optional[str], item: T) -> T:
         """
         Creates a data item.
 
@@ -139,8 +135,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         return super().create(correlation_id, item)
 
-
-    def set(self, correlation_id, item):
+    def set(self, correlation_id: Optional[str], item: T) -> T:
         """
         Sets a data item. If the data item exists it updates it, otherwise it create a new data item.
 
@@ -150,13 +145,13 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         :return: an updated item
         """
-        if 'id' not in item or item['id'] == None:
+        if 'id' not in item or item['id'] is None:
             item['id'] = IdGenerator.next_long()
 
         self._lock.acquire()
         try:
             old_item = self._find_one(item['id'])
-            if old_item == None:
+            if old_item is None:
                 self._items.append(item)
             else:
                 index = self._items.index(old_item)
@@ -173,8 +168,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self.save(correlation_id)
         return item
 
-
-    def update(self, correlation_id, new_item):
+    def update(self, correlation_id: Optional[str], new_item: T) -> T:
         """
         Updates a data item.
 
@@ -189,7 +183,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
             old_item = self._find_one(new_item['id'])
             if old_item == None:
                 return None
-            
+
             index = self._items.index(old_item)
             if index < 0: return None
 
@@ -203,7 +197,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self.save(correlation_id)
         return new_item
 
-    def update_partially(self, correlation_id, id, data):
+    def update_partially(self, correlation_id: Optional[str], id: Any, data: AnyValueMap) -> T:
         """
         Updates only few selected fields in a data item.
 
@@ -222,7 +216,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
             old_item = self._find_one(id)
             if old_item == None:
                 return None
-            
+
             for (k, v) in data.items():
                 old_item[k] = v
 
@@ -236,8 +230,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self.save(correlation_id)
         return new_item
 
-
-    def delete_by_id(self, correlation_id, id):
+    def delete_by_id(self, correlation_id: Optional[str], id: Any) -> T:
         """
         Deleted a data item by it's unique id.
 
@@ -251,7 +244,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         try:
             item = self._find_one(id)
             if item == None: return None
-            
+
             index = self._items.index(item)
             if index < 0: return None
 
@@ -264,8 +257,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self.save(correlation_id)
         return item
 
-
-    def delete_by_ids(self, correlation_id, ids):
+    def delete_by_ids(self, correlation_id: Optional[str], ids: List[Any]):
         """
         Deletes multiple data items by their unique ids.
 
@@ -273,7 +265,8 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         :param ids: ids of data items to be deleted.
         """
+
         def filter(item):
             return item['id'] in ids
-        
+
         self.delete_by_filter(correlation_id, filter)

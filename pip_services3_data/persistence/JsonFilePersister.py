@@ -11,8 +11,9 @@
 
 import json
 import os
+from typing import Optional, Any, List
 
-from pip_services3_commons.config import IConfigurable
+from pip_services3_commons.config import IConfigurable, ConfigParams
 from pip_services3_commons.errors import ConfigException, FileException
 
 from ..ILoader import ILoader
@@ -32,7 +33,7 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
 
     .. code-block:: python
     
-        persister = JsonFilePersister(MyData.class, "./data/data.json")
+        persister = JsonFilePersister("./data/data.json")
 
         persister.save("123", ["A", "B", "C"])
         ...
@@ -40,17 +41,34 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
         persister.load("123", items)
         print items
     """
-    path = None
 
-    def __init__(self, path=None):
+    def __init__(self, path: str = None):
         """
         Creates a new instance of the persistence.
 
         :param path: (optional) a path to the file where data is stored.
         """
-        self.path = path
+        self.__path = path
 
-    def configure(self, config):
+    @property
+    def path(self) -> str:
+        """
+        Gets the file path where data is stored.
+
+        :returns: the file path where data is stored.
+        """
+        return self.__path
+
+    @path.setter
+    def path(self, value: str):
+        """
+        Sets the file path where data is stored.
+
+        :param value: the file path where data is stored.
+        """
+        self.__path = value
+
+    def configure(self, config: ConfigParams):
         """
         Configures component by passing configuration parameters.
 
@@ -58,12 +76,12 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
         """
         try:
             if config is not None or config.contains_key("path"):
-                self.path = config.get_as_string("path")
+                self.__path = config.get_as_string("path")
 
         except AttributeError:
             raise ConfigException(None, "NO_PATH", "Data file path is not set")
 
-    def load(self, correlation_id):
+    def load(self, correlation_id: Optional[str]) -> List[Any]:
         """
         Loads data items from external JSON file.
 
@@ -72,27 +90,27 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
         :return: loaded items
         """
         # If doesn't exist then consider empty data
-        if not os.path.isfile(self.path):
+        if not os.path.isfile(self.__path):
             return []
 
         try:
-            with open(self.path, 'r') as file:
+            with open(self.__path, 'r') as file:
                 return json.load(file)
         except Exception as ex:
             raise FileException(correlation_id, "READ_FAILED", "Failed to read data file: " + str(ex)) \
                 .with_cause(ex)
 
-    def save(self, correlation_id, entities):
+    def save(self, correlation_id: Optional[str], items: List[Any]):
         """
         Saves given data items to external JSON file.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
 
-        :param entities: list if data items to save
+        :param items: list if data items to save
         """
         try:
-            with open(self.path, 'w') as file:
-                json.dump(entities, file)
+            with open(self.__path, 'w') as file:
+                json.dump(items, file)
         except Exception as ex:
             raise FileException(correlation_id, "WRITE_FAILED", "Failed to write data file: " + str(ex)) \
                 .with_cause(ex)

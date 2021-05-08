@@ -8,12 +8,17 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from typing import Any, Optional, TypeVar
+
+T = TypeVar('T')  # Declare type variable
+
 
 class IWriter:
     """
     Interface for data processing components that can create, update and delete data items.
     """
-    def create(self, correlation_id, item):
+
+    def create(self, correlation_id: Optional[str], item: T) -> T:
         """
         Creates a data item.
 
@@ -25,7 +30,7 @@ class IWriter:
         """
         raise NotImplementedError('Method from interface definition')
 
-    def update(self, correlation_id, item):
+    def update(self, correlation_id: Optional[str], item: T) -> T:
         """
         Updates a data item.
 
@@ -37,7 +42,7 @@ class IWriter:
         """
         raise NotImplementedError('Method from interface definition')
 
-    def delete_by_id(self, correlation_id, id):
+    def delete_by_id(self, correlation_id: Optional[str], id: Any) -> T:
         """
         Deleted a data item by it's unique id.
 
@@ -45,6 +50,6 @@ class IWriter:
 
         :param id: an id of the item to be deleted
 
-        :return: (optional) callback function that receives deleted item or error.
+        :return: deleted item.
         """
         raise NotImplementedError('Method from interface definition')

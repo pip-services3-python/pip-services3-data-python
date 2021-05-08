@@ -8,12 +8,16 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from abc import ABC
+from typing import List, Any, Optional
 
-class ILoader:
+
+class ILoader(ABC):
     """
     Interface for data processing components that load data items.
     """
-    def load(self, correlation_id):
+
+    def load(self, correlation_id: Optional[str]) -> List[Any]:
         """
         Loads data items.
 

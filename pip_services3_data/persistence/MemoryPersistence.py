@@ -11,16 +11,21 @@
 
 import random
 import threading
+from typing import List, Any, Optional, TypeVar
 
-from pip_services3_commons.config import IConfigurable, IReconfigurable, ConfigParams
-from pip_services3_commons.refer import IReferenceable, IReferences
+from pip_services3_commons.config import IConfigurable, ConfigParams
 from pip_services3_commons.data import PagingParams, DataPage
-from pip_services3_commons.run import IOpenable, IClosable, ICleanable
+from pip_services3_commons.refer import IReferenceable, IReferences
+from pip_services3_commons.run import IOpenable, ICleanable
 from pip_services3_components.log import CompositeLogger
-from pip_services3_commons.data import PagingParams, DataPage, IdGenerator
 
 # This function will be overriden in the code
+from pip_services3_data import ILoader, ISaver
+
 filtered = filter
+
+T = TypeVar('T')  # Declare type variable
+
 
 class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
     """
@@ -36,6 +41,10 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
     data source. That allows to use it as a base class for file
     and other types of persistence components that cache all data
     in memory.
+
+     ### Configuration parameters ###
+        - options:
+            - max_page_size:       Maximum number of items returned in a single page (default: 100)
 
     ### References ###
         - `*:logger:*:*:1.0`   (optional) ILogger components to pass log messages
@@ -56,14 +65,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         persistence.set("123", MyData("ABC"))
         print str(persistence.get_by_name("123", "ABC")))
     """
-    _logger = None
-    _items = None
-    _loader = None
-    _saver = None
-    _lock = None
-    _opened = False
 
-    def __init__(self, loader = None, saver = None):
+    def __init__(self, loader: ILoader = None, saver: ISaver = None):
         """
         Creates a new instance of the persistence.
 
@@ -71,11 +74,13 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         :param saver: (optional) a saver to save items to external datasource.
         """
-        self._lock = threading.Lock()
-        self._logger = CompositeLogger()
-        self._items = []
-        self._loader = loader
-        self._saver = saver
+        self._lock: threading.Lock = threading.Lock()
+        self._logger: CompositeLogger = CompositeLogger()
+        self._items: List[Any] = []
+        self._loader: ILoader = loader
+        self._saver: ISaver = saver
+        self._opened: bool = False
+        self._max_page_size = 100
 
     def configure(self, config: ConfigParams):
         """
@@ -93,7 +98,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         """
         self._logger.set_references(references)
 
-    def is_opened(self) -> bool:
+    def is_open(self) -> bool:
         """
         Checks if the component is opened.
 
@@ -101,7 +106,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         """
         return self._opened
 
-    def open(self, correlation_id: str):
+    def open(self, correlation_id: Optional[str]):
         """
         Opens the component.
 
@@ -110,7 +115,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         self.load(correlation_id)
         self._opened = True
 
-    def close(self, correlation_id: str):
+    def close(self, correlation_id: Optional[str]):
         """
         Closes component and frees used resources.
 
@@ -127,8 +132,11 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
     def _convert_from_public(self, value):
         return value
 
-    def load(self, correlation_id: str):
-        if self._loader == None: return
+    def load(self, correlation_id: Optional[str]):
+        """
+        TODO add description
+        """
+        if self._loader is None: return
 
         self._lock.acquire()
         try:
@@ -142,13 +150,13 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         self._logger.trace(correlation_id, "Loaded " + str(len(self._items)) + " items")
 
-    def save(self, correlation_id: str):
+    def save(self, correlation_id: Optional[str]):
         """
         Saves items to external data source using configured saver component.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
-        if self._saver == None: return
+        if self._saver is None: return
 
         self._lock.acquire()
         try:
@@ -162,14 +170,14 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         self._logger.trace(correlation_id, "Saved " + str(len(self._items)) + " items")
 
-    def clear(self, correlation_id: str):
+    def clear(self, correlation_id: Optional[str]):
         """
         Clears component state.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         self._lock.acquire()
-        
+
         try:
             del self._items[:]
         finally:
@@ -180,8 +188,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         # Outside of lock to avoid reentry
         self.save(correlation_id)
 
-
-    def create(self, correlation_id: str, item):
+    def create(self, correlation_id: Optional[str], item: T) -> T:
         """
         Creates a data item.
 
@@ -203,8 +210,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         self.save(correlation_id)
         return item
 
-
-    def get_page_by_filter(self, correlation_id: str, filter, paging: PagingParams, sort = None, select = None) -> DataPage:
+    def get_page_by_filter(self, correlation_id: Optional[str], filter: Any, paging: PagingParams, sort: Any = None,
+                           select: Any = None) -> DataPage:
         """
         Gets a page of data items retrieved by a given filter and sorted according to sort parameters.
 
@@ -228,11 +235,11 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
             items = list(self._items)
         finally:
             self._lock.release()
-            
+
         # Filter and sort
-        if not (filter is None):
+        if filter is not None:
             items = list(filtered(filter, items))
-        if not (sort is None):
+        if sort is not None:
             items = list(items.sort(key=sort))
             # items = sorted(items, sort)
 
@@ -240,25 +247,25 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         paging = paging if not (paging is None) else PagingParams()
         skip = paging.get_skip(-1)
         take = paging.get_take(self._max_page_size)
-        
+
         # Get a page
         data = items
         if skip > 0:
             data = data[skip:]
         if take > 0:
-            data = data[:take+1]
-                
+            data = data[:take + 1]
+
         # Convert values
         if not (select is None):
             data = map(select, data)
-                
+
         self._logger.trace(correlation_id, "Retrieved " + str(len(data)) + " items")
 
         # Return a page
         return DataPage(data, len(items))
 
-
-    def get_list_by_filter(self, correlation_id: str, filter, sort = None, select = None) -> list:
+    def get_list_by_filter(self, correlation_id: Optional[str], filter: Any, sort: Any = None, select:
+                            Any = None) -> List[T]:
         """
         Gets a list of data items retrieved by a given filter and sorted according to sort parameters.
 
@@ -286,16 +293,26 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
             items = list(filtered(filter, items))
         if not (sort is None):
             items = list(sorted(items, key=sort))
-                        
+
         # Convert values      
         if not (select is None):
             items = map(select, items)
-                
+
         # Return a list
         return list(items)
 
-    def get_count_by_filter(self, correlation_id: str, filter) -> int:
- 
+    def get_count_by_filter(self, correlation_id: Optional[str], filter: Any) -> int:
+        """
+        Gets a number of items retrieved by a given filter.
+
+        This method shall be called by a public get_count_by_filter method from child class that
+        receives FilterParams and converts them into a filter function.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+        :param filter: (optional) a filter function to filter items
+        :return:  a number of data items that satisfy the filter.
+        """
+
         self._lock.acquire()
         try:
             items = list(self._items)
@@ -305,14 +322,13 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         # Filter and sort
         if not (filter is None):
             items = list(filtered(filter, items))
- 
+
         self._logger.trace(correlation_id, f"Retrieved {len(items)} items")
-                
+
         # Return a list
         return len(items)
 
-
-    def get_one_random(self, correlation_id: str):
+    def get_one_random(self, correlation_id: Optional[str]) -> T:
         """
         Gets a random item from items that match to a given filter.
 
@@ -332,16 +348,15 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
             item = self._items[index]
         finally:
             self._lock.release()
-            
+
         if not (item is None):
             self._logger.trace(correlation_id, "Retrieved a random item")
         else:
             self._logger.trace(correlation_id, "Nothing to return as random item")
-                        
+
         return item
 
-
-    def delete_by_filter(self, correlation_id: str, filter):
+    def delete_by_filter(self, correlation_id: Optional[str], filter: Any):
         """
         Deletes data items that match to a given filter.
 
@@ -352,6 +367,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         :param filter: (optional) a filter function to filter items.
         """
+
         def negative_filter(item):
             return not filter(item)
 
@@ -365,5 +381,5 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         deleted = old_length - len(list(self._items))
         self._logger.trace(correlation_id, "Deleted " + str(deleted) + " items")
 
-        if (deleted > 0):
+        if deleted > 0:
             self.save(correlation_id)
