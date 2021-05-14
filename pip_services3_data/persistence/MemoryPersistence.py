@@ -11,7 +11,7 @@
 
 import random
 import threading
-from typing import List, Any, Optional, TypeVar
+from typing import List, Any, Optional
 
 from pip_services3_commons.config import IConfigurable, ConfigParams
 from pip_services3_commons.data import PagingParams, DataPage
@@ -23,8 +23,6 @@ from pip_services3_components.log import CompositeLogger
 from pip_services3_data import ILoader, ISaver
 
 filtered = filter
-
-T = TypeVar('T')  # Declare type variable
 
 
 class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
@@ -74,7 +72,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         :param saver: (optional) a saver to save items to external datasource.
         """
-        self._lock: threading.Lock = threading.Lock()
+        self._lock: Anyhreading.Lock = threading.Lock()
         self._logger: CompositeLogger = CompositeLogger()
         self._items: List[Any] = []
         self._loader: ILoader = loader
@@ -102,7 +100,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         """
         Checks if the component is opened.
 
-        :return: true if the component has been opened and false otherwise.
+        :return: Anyrue if the component has been opened and false otherwise.
         """
         return self._opened
 
@@ -188,7 +186,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         # Outside of lock to avoid reentry
         self.save(correlation_id)
 
-    def create(self, correlation_id: Optional[str], item: T) -> T:
+    def create(self, correlation_id: Optional[str], item: Any) -> dict:
         """
         Creates a data item.
 
@@ -265,7 +263,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         return DataPage(data, len(items))
 
     def get_list_by_filter(self, correlation_id: Optional[str], filter: Any, sort: Any = None, select:
-                            Any = None) -> List[T]:
+                            Any = None) -> List[dict]:
         """
         Gets a list of data items retrieved by a given filter and sorted according to sort parameters.
 
@@ -328,7 +326,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         # Return a list
         return len(items)
 
-    def get_one_random(self, correlation_id: Optional[str]) -> T:
+    def get_one_random(self, correlation_id: Optional[str]) -> dict:
         """
         Gets a random item from items that match to a given filter.
 

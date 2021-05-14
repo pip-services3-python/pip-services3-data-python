@@ -8,7 +8,7 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
-from typing import Optional, Any, List, TypeVar
+from typing import Optional, Any, List
 
 from pip_services3_commons.data import IdGenerator, IIdentifiable, AnyValueMap
 
@@ -20,8 +20,6 @@ from ..IWriter import IWriter
 
 # This function will be overriden in the code
 filtered = filter
-
-T = TypeVar('T')  # Declare type variable
 
 
 class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter, IIdentifiable):
@@ -76,7 +74,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
         super(IdentifiableMemoryPersistence, self).__init__(loader, saver)
 
-    def get_list_by_ids(self, correlation_id: Optional[str], ids: List[Any]) -> List[T]:
+    def get_list_by_ids(self, correlation_id: Optional[str], ids: List[Any]) -> List[dict]:
         """
         Gets a list of data items retrieved by given unique ids.
 
@@ -98,7 +96,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
                 return item
         return None
 
-    def get_one_by_id(self, correlation_id: Optional[str], id: Any) -> T:
+    def get_one_by_id(self, correlation_id: Optional[str], id: Any) -> dict:
         """
         Gets a data item by its unique id.
 
@@ -120,7 +118,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
             self._logger.trace(correlation_id, "Cannot find item by " + str(id))
         return item
 
-    def create(self, correlation_id: Optional[str], item: T) -> T:
+    def create(self, correlation_id: Optional[str], item: Any) -> dict:
         """
         Creates a data item.
 
@@ -135,7 +133,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         return super().create(correlation_id, item)
 
-    def set(self, correlation_id: Optional[str], item: T) -> T:
+    def set(self, correlation_id: Optional[str], item: Any) -> dict:
         """
         Sets a data item. If the data item exists it updates it, otherwise it create a new data item.
 
@@ -168,7 +166,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self.save(correlation_id)
         return item
 
-    def update(self, correlation_id: Optional[str], new_item: T) -> T:
+    def update(self, correlation_id: Optional[str], new_item: Any) -> dict:
         """
         Updates a data item.
 
@@ -197,7 +195,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self.save(correlation_id)
         return new_item
 
-    def update_partially(self, correlation_id: Optional[str], id: Any, data: AnyValueMap) -> T:
+    def update_partially(self, correlation_id: Optional[str], id: Any, data: AnyValueMap) -> dict:
         """
         Updates only few selected fields in a data item.
 
@@ -230,7 +228,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self.save(correlation_id)
         return new_item
 
-    def delete_by_id(self, correlation_id: Optional[str], id: Any) -> T:
+    def delete_by_id(self, correlation_id: Optional[str], id: Any) -> dict:
         """
         Deleted a data item by it's unique id.
 

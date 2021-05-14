@@ -8,16 +8,14 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
-from typing import Optional, TypeVar
-
-T = TypeVar('T')  # Declare type variable
+from typing import Optional, Any
 
 class ISetter:
     """
     Interface for data processing components that can set (create or update) data items.
     """
 
-    def set(self, correlation_id: Optional[str], item: T) -> T:
+    def set(self, correlation_id: Optional[str], item: Any) -> dict:
         """
         Sets a data item. If the data item exists it updates it, otherwise it create a new data item.
 

@@ -3,6 +3,5 @@ PyYAML
 pystache
 pytest
 pytz
-pymongo
 pip_services3_commons
 pip_services3_components
