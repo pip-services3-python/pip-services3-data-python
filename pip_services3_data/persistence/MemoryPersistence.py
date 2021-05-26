@@ -11,7 +11,7 @@
 
 import random
 import threading
-from typing import List, Any, Optional
+from typing import List, Any, Optional, TypeVar
 
 from pip_services3_commons.config import IConfigurable, ConfigParams
 from pip_services3_commons.data import PagingParams, DataPage
@@ -23,6 +23,8 @@ from pip_services3_components.log import CompositeLogger
 from pip_services3_data import ILoader, ISaver
 
 filtered = filter
+
+T = TypeVar('T')  # Declare type variable
 
 
 class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
@@ -72,7 +74,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         :param saver: (optional) a saver to save items to external datasource.
         """
-        self._lock: Anyhreading.Lock = threading.Lock()
+        self._lock: threading.Lock = threading.Lock()
         self._logger: CompositeLogger = CompositeLogger()
         self._items: List[Any] = []
         self._loader: ILoader = loader
@@ -122,14 +124,6 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         self.save(correlation_id)
         self._opened = False
 
-    # TODO: not exists into nodejs
-    def _convert_to_public(self, value):
-        return value
-
-    # TODO: not exists into nodejs
-    def _convert_from_public(self, value):
-        return value
-
     def load(self, correlation_id: Optional[str]):
         """
         TODO add description
@@ -138,11 +132,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         self._lock.acquire()
         try:
-            items = self._loader.load(correlation_id)
-            self._items = []
-            for item in items:
-                item = self._convert_to_public(item)
-                self._items.append(item)
+            self._items = self._loader.load(correlation_id)
+
         finally:
             self._lock.release()
 
@@ -158,11 +149,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         self._lock.acquire()
         try:
-            items = []
-            for item in self._items:
-                item = self._convert_from_public(item)
-                items.append(item)
-            self._saver.save(correlation_id, items)
+            self._saver.save(correlation_id, self._items)
         finally:
             self._lock.release()
 
@@ -186,7 +173,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         # Outside of lock to avoid reentry
         self.save(correlation_id)
 
-    def create(self, correlation_id: Optional[str], item: Any) -> dict:
+    def create(self, correlation_id: Optional[str], item: T) -> T:
         """
         Creates a data item.
 
@@ -242,7 +229,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
             # items = sorted(items, sort)
 
         # Prepare paging parameters
-        paging = paging if not (paging is None) else PagingParams()
+        paging = paging if paging is not None else PagingParams()
         skip = paging.get_skip(-1)
         take = paging.get_take(self._max_page_size)
 
@@ -262,8 +249,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         # Return a page
         return DataPage(data, len(items))
 
-    def get_list_by_filter(self, correlation_id: Optional[str], filter: Any, sort: Any = None, select:
-                            Any = None) -> List[dict]:
+    def get_list_by_filter(self, correlation_id: Optional[str], filter: Any,
+                           sort: Any = None, select: Any = None) -> List[T]:
         """
         Gets a list of data items retrieved by a given filter and sorted according to sort parameters.
 
@@ -326,7 +313,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         # Return a list
         return len(items)
 
-    def get_one_random(self, correlation_id: Optional[str]) -> dict:
+    def get_one_random(self, correlation_id: Optional[str]) -> T:
         """
         Gets a random item from items that match to a given filter.
 

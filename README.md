@@ -27,11 +27,11 @@ pip install pip_services3_data
 As an example, lets implement persistence for the following data object.
 
 ```python
-class MyObject(dict):
-    def __init__(self, id=None, key=None, value=None):
-        self['id'] = id
-        self['key'] = key
-        self['content'] = content
+class Dummy(IStringIdentifiable):
+    def __init__(self, id=None, key=None, content=None):
+        self.id = id
+        self.key = key
+        self.content = content
 ```
 
 Our persistence component shall implement the following interface with a basic set of CRUD operations.
@@ -42,16 +42,16 @@ class IMyPersistence(ABC):
                            paging: Union[PagingParams, None]) -> DataPage:
         raise NotImplemented()
 
-    def get_one_by_id(self, correlation_id: Optional[str], id: str) -> dict:
+    def get_one_by_id(self, correlation_id: Optional[str], id: str) -> T:
         raise NotImplemented()
 
-    def get_one_by_key(self, correlation_id: Optional[str], key: List[str]) -> dict:
+    def get_one_by_key(self, correlation_id: Optional[str], key: List[str]) -> T:
         raise NotImplemented()
 
-    def create(self, correlation_id: Optional[str], item: Any) -> dict:
+    def create(self, correlation_id: Optional[str], item: T) -> T:
         raise NotImplemented()
 
-    def update(self, correlation_id: Optional[str], item: Any) -> dict:
+    def update(self, correlation_id: Optional[str], item: T) -> T:
         raise NotImplemented()
 
     def delete_by_id(self, correlation_id: Optional[str], id: str):

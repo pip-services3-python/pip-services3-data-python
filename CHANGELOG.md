@@ -5,6 +5,7 @@
 ### Bug Fixes
 * fixed names of private, protected and public properties and methods
 * fixed documentation, add examples
+* fixed returned types for operations
 
 ### Features
 * Added type hints

@@ -8,9 +8,11 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
-from typing import Any, Optional
+from typing import Any, Optional, TypeVar
 
 from pip_services3_commons.data import IIdentifiable
+
+T = TypeVar('T')  # Declare type variable
 
 
 class IGetter(IIdentifiable):
@@ -18,7 +20,7 @@ class IGetter(IIdentifiable):
     Interface for data processing components that can get data items.
     """
 
-    def get_one_by_id(self, correlation_id: Optional[str], id: Any) -> Any:
+    def get_one_by_id(self, correlation_id: Optional[str], id: Any) -> T:
         """
         Gets a data items by its unique id.
 

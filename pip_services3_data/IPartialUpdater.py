@@ -9,9 +9,11 @@
     :license: MIT, see LICENSE for more details.
 """
 from abc import ABC
-from typing import Optional, Any
+from typing import Optional, Any, TypeVar
 
 from pip_services3_commons.data import AnyValueMap
+
+T = TypeVar('T')  # Declare type variable
 
 
 class IPartialUpdater(ABC):
@@ -19,7 +21,7 @@ class IPartialUpdater(ABC):
     Interface for data processing components to update data items partially.
     """
 
-    def update_partially(self, correlation_id: Optional[str], id: Any, data: AnyValueMap) -> Any:
+    def update_partially(self, correlation_id: Optional[str], id: Any, data: AnyValueMap) -> T:
         """
         Updates only few selected fields in a data item.
 

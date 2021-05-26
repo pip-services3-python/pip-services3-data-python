@@ -9,7 +9,9 @@
     :license: MIT, see LICENSE for more details.
 """
 from abc import ABC
-from typing import List, Any, Optional
+from typing import List, Optional, TypeVar
+
+T = TypeVar('T')  # Declare type variable
 
 
 class ILoader(ABC):
@@ -17,7 +19,7 @@ class ILoader(ABC):
     Interface for data processing components that load data items.
     """
 
-    def load(self, correlation_id: Optional[str]) -> List[Any]:
+    def load(self, correlation_id: Optional[str]) -> List[T]:
         """
         Loads data items.
 

@@ -8,7 +8,9 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
-from typing import List, Any, Optional
+from typing import List, Optional, TypeVar
+
+T = TypeVar('T')  # Declare type variable
 
 
 class ISaver:
@@ -16,7 +18,7 @@ class ISaver:
     Interface for data processing components that save data items.
     """
 
-    def save(self, correlation_id: Optional[str], items: List[Any]):
+    def save(self, correlation_id: Optional[str], items: List[T]):
         """
         Saves given data items.
 

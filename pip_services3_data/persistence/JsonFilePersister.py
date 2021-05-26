@@ -11,13 +11,17 @@
 
 import json
 import os
-from typing import Optional, Any, List
+from typing import Optional, List, TypeVar
 
 from pip_services3_commons.config import IConfigurable, ConfigParams
+from pip_services3_commons.convert import JsonConverter
 from pip_services3_commons.errors import ConfigException, FileException
+from pip_services3_commons.reflect import ObjectReader
 
 from ..ILoader import ILoader
 from ..ISaver import ISaver
+
+T = TypeVar('T')  # Declare type variable
 
 
 class JsonFilePersister(ILoader, ISaver, IConfigurable):
@@ -75,13 +79,13 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
         :param config: configuration parameters to be set.
         """
         try:
-            if config is not None or config.contains_key("path"):
+            if config is not None or config.get("path"):
                 self.__path = config.get_as_string("path")
 
         except AttributeError:
             raise ConfigException(None, "NO_PATH", "Data file path is not set")
 
-    def load(self, correlation_id: Optional[str]) -> List[Any]:
+    def load(self, correlation_id: Optional[str]) -> List[T]:
         """
         Loads data items from external JSON file.
 
@@ -100,7 +104,7 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
             raise FileException(correlation_id, "READ_FAILED", "Failed to read data file: " + str(ex)) \
                 .with_cause(ex)
 
-    def save(self, correlation_id: Optional[str], items: List[Any]):
+    def save(self, correlation_id: Optional[str], items: List[T]):
         """
         Saves given data items to external JSON file.
 
@@ -109,8 +113,12 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
         :param items: list if data items to save
         """
         try:
+            list_props = []
+            for item in items:
+                list_props.append(ObjectReader.get_properties(item))
+
             with open(self.__path, 'w') as file:
-                json.dump(items, file)
+                json.dump(list_props, file)
         except Exception as ex:
             raise FileException(correlation_id, "WRITE_FAILED", "Failed to write data file: " + str(ex)) \
                 .with_cause(ex)

@@ -8,7 +8,7 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
-from typing import Optional, Any, List
+from typing import Optional, Any, List, TypeVar
 
 from pip_services3_commons.data import IdGenerator, IIdentifiable, AnyValueMap
 
@@ -20,6 +20,8 @@ from ..IWriter import IWriter
 
 # This function will be overriden in the code
 filtered = filter
+
+T = TypeVar('T')  # Declare type variable
 
 
 class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter, IIdentifiable):
@@ -74,7 +76,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
         super(IdentifiableMemoryPersistence, self).__init__(loader, saver)
 
-    def get_list_by_ids(self, correlation_id: Optional[str], ids: List[Any]) -> List[dict]:
+    def get_list_by_ids(self, correlation_id: Optional[str], ids: List[Any]) -> List[T]:
         """
         Gets a list of data items retrieved by given unique ids.
 
@@ -86,17 +88,17 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
 
         def filter(item):
-            return item['id'] in ids
+            return item.id in ids
 
         return self.get_list_by_filter(correlation_id, filter)
 
     def _find_one(self, id: str):
         for item in self._items:
-            if item['id'] == id:
+            if item.id == id:
                 return item
         return None
 
-    def get_one_by_id(self, correlation_id: Optional[str], id: Any) -> dict:
+    def get_one_by_id(self, correlation_id: Optional[str], id: Any) -> T:
         """
         Gets a data item by its unique id.
 
@@ -118,7 +120,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
             self._logger.trace(correlation_id, "Cannot find item by " + str(id))
         return item
 
-    def create(self, correlation_id: Optional[str], item: Any) -> dict:
+    def create(self, correlation_id: Optional[str], item: T) -> T:
         """
         Creates a data item.
 
@@ -128,12 +130,12 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         :return: a created item
         """
-        if 'id' not in item or item['id'] is None:
-            item['id'] = IdGenerator.next_long()
+        if not hasattr(item, 'id') or item.id is None:
+            item.id = IdGenerator.next_long()
 
         return super().create(correlation_id, item)
 
-    def set(self, correlation_id: Optional[str], item: Any) -> dict:
+    def set(self, correlation_id: Optional[str], item: T) -> T:
         """
         Sets a data item. If the data item exists it updates it, otherwise it create a new data item.
 
@@ -166,7 +168,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self.save(correlation_id)
         return item
 
-    def update(self, correlation_id: Optional[str], new_item: Any) -> dict:
+    def update(self, correlation_id: Optional[str], new_item: T) -> T:
         """
         Updates a data item.
 
@@ -178,8 +180,8 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
         self._lock.acquire()
         try:
-            old_item = self._find_one(new_item['id'])
-            if old_item == None:
+            old_item = self._find_one(new_item.id)
+            if old_item is None:
                 return None
 
             index = self._items.index(old_item)
@@ -195,7 +197,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self.save(correlation_id)
         return new_item
 
-    def update_partially(self, correlation_id: Optional[str], id: Any, data: AnyValueMap) -> dict:
+    def update_partially(self, correlation_id: Optional[str], id: Any, data: AnyValueMap) -> T:
         """
         Updates only few selected fields in a data item.
 
@@ -215,8 +217,8 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
             if old_item == None:
                 return None
 
-            for (k, v) in data.items():
-                old_item[k] = v
+            for k, v in data.items():
+                setattr(old_item, k, v)
 
             new_item = old_item
         finally:
@@ -228,7 +230,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self.save(correlation_id)
         return new_item
 
-    def delete_by_id(self, correlation_id: Optional[str], id: Any) -> dict:
+    def delete_by_id(self, correlation_id: Optional[str], id: Any) -> T:
         """
         Deleted a data item by it's unique id.
 
@@ -265,6 +267,6 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
 
         def filter(item):
-            return item['id'] in ids
+            return item.id in ids
 
         self.delete_by_filter(correlation_id, filter)
