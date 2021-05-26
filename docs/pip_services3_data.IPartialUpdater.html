@@ -194,11 +194,11 @@
 <dl class="py class">
 <dt id="pip_services3_data.IPartialUpdater.IPartialUpdater">
 <em class="property">class </em><code class="sig-prename descclassname">pip_services3_data.IPartialUpdater.</code><code class="sig-name descname">IPartialUpdater</code><a class="headerlink" href="#pip_services3_data.IPartialUpdater.IPartialUpdater" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
 <p>Interface for data processing components to update data items partially.</p>
 <dl class="py method">
 <dt id="pip_services3_data.IPartialUpdater.IPartialUpdater.update_partially">
-<code class="sig-name descname">update_partially</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span></em>, <em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.IPartialUpdater.IPartialUpdater.update_partially" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update_partially</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">id</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.data.AnyValueMap.html#pip_services3_commons.data.AnyValueMap.AnyValueMap" title="(in pip-services3-commons)">pip_services3_commons.data.AnyValueMap.AnyValueMap</a></span></em><span class="sig-paren">)</span> &#x2192; T<a class="headerlink" href="#pip_services3_data.IPartialUpdater.IPartialUpdater.update_partially" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates only few selected fields in a data item.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

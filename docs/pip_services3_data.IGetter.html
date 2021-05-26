@@ -194,11 +194,11 @@
 <dl class="py class">
 <dt id="pip_services3_data.IGetter.IGetter">
 <em class="property">class </em><code class="sig-prename descclassname">pip_services3_data.IGetter.</code><code class="sig-name descname">IGetter</code><a class="headerlink" href="#pip_services3_data.IGetter.IGetter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.data.IIdentifiable.html#pip_services3_commons.data.IIdentifiable.IIdentifiable" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.data.IIdentifiable.IIdentifiable</span></code></a></p>
 <p>Interface for data processing components that can get data items.</p>
 <dl class="py method">
 <dt id="pip_services3_data.IGetter.IGetter.get_one_by_id">
-<code class="sig-name descname">get_one_by_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.IGetter.IGetter.get_one_by_id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_one_by_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">id</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; T<a class="headerlink" href="#pip_services3_data.IGetter.IGetter.get_one_by_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a data items by its unique id.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -212,6 +212,11 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="pip_services3_data.IGetter.IGetter.id">
+<code class="sig-name descname">id</code><em class="property">: Any</em><a class="headerlink" href="#pip_services3_data.IGetter.IGetter.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 

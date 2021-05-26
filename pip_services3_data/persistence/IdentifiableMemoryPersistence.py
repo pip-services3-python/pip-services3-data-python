@@ -130,6 +130,9 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         :return: a created item
         """
+        if isinstance(item, dict):
+            item = type('object', (object,), item)
+
         if not hasattr(item, 'id') or item.id is None:
             item.id = IdGenerator.next_long()
 

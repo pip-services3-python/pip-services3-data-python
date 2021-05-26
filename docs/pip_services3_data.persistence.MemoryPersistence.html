@@ -186,7 +186,7 @@
 </dl>
 <dl class="py class">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence">
-<em class="property">class </em><code class="sig-prename descclassname">pip_services3_data.persistence.MemoryPersistence.</code><code class="sig-name descname">MemoryPersistence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loader</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saver</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pip_services3_data.persistence.MemoryPersistence.</code><code class="sig-name descname">MemoryPersistence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loader</span><span class="p">:</span> <span class="n"><a class="reference internal" href="pip_services3_data.ILoader.html#pip_services3_data.ILoader.ILoader" title="pip_services3_data.ILoader.ILoader">pip_services3_data.ILoader.ILoader</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saver</span><span class="p">:</span> <span class="n"><a class="reference internal" href="pip_services3_data.ISaver.html#pip_services3_data.ISaver.ISaver" title="pip_services3_data.ISaver.ISaver">pip_services3_data.ISaver.ISaver</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.config.IConfigurable.html#pip_services3_commons.config.IConfigurable.IConfigurable" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code></a>, <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.refer.IReferenceable.html#pip_services3_commons.refer.IReferenceable.IReferenceable" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code></a>, <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.run.IOpenable.html#pip_services3_commons.run.IOpenable.IOpenable" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.run.IOpenable.IOpenable</span></code></a>, <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.run.ICleanable.html#pip_services3_commons.run.ICleanable.ICleanable" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.run.ICleanable.ICleanable</span></code></a></p>
 <p>Abstract persistence component that stores data in memory.</p>
 <p>This is the most basic persistence component that is only
@@ -198,6 +198,20 @@ accessing <code class="xref py py-func docutils literal notranslate"><span class
 data source. That allows to use it as a base class for file
 and other types of persistence components that cache all data
 in memory.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>### Configuration parameters ###</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>options:</dt><dd><ul>
+<li><p>max_page_size:       Maximum number of items returned in a single page (default: 100)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
 <dl class="simple">
 <dt>### References ###</dt><dd><ul class="simple">
 <li><p><cite>*:logger:*:*:1.0</cite>   (optional) ILogger components to pass log messages</p></li>
@@ -220,7 +234,7 @@ in memory.</p>
 </div>
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.clear">
-<code class="sig-name descname">clear</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.clear" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears component state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -231,7 +245,7 @@ in memory.</p>
 
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.close" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Closes component and frees used resources.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -253,7 +267,7 @@ in memory.</p>
 
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.create">
-<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.create" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">item</span><span class="p">:</span> <span class="n">T</span></em><span class="sig-paren">)</span> &#x2192; T<a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a data item.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -270,7 +284,7 @@ in memory.</p>
 
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.delete_by_filter">
-<code class="sig-name descname">delete_by_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">filter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.delete_by_filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">delete_by_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">filter</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.delete_by_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes data items that match to a given filter.</p>
 <p>This method shall be called by a public <a class="reference internal" href="pip_services3_data.persistence.html#pip_services3_data.persistence.MemoryPersistence.delete_by_filter" title="pip_services3_data.persistence.MemoryPersistence.delete_by_filter"><code class="xref py py-func docutils literal notranslate"><span class="pre">delete_by_filter()</span></code></a> method from child class that
 receives <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.data.FilterParams.html#pip_services3_commons.data.FilterParams.FilterParams" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">FilterParams</span></code></a> and converts them into a filter function.</p>
@@ -286,12 +300,26 @@ receives <a class="reference external" href="https://pip-services3-python.github
 
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_count_by_filter">
-<code class="sig-name descname">get_count_by_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">filter</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="http://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_count_by_filter" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">get_count_by_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">filter</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="http://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_count_by_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a number of items retrieved by a given filter.</p>
+<p>This method shall be called by a public get_count_by_filter method from child class that
+receives FilterParams and converts them into a filter function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</p></li>
+<li><p><strong>filter</strong> – (optional) a filter function to filter items</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a number of data items that satisfy the filter.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_list_by_filter">
-<code class="sig-name descname">get_list_by_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">filter</span></em>, <em class="sig-param"><span class="n">sort</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">select</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_list_by_filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_list_by_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">filter</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">sort</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">select</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>T<span class="p">]</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_list_by_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a list of data items retrieved by a given filter and sorted according to sort parameters.</p>
 <p>This method shall be called by a public <a class="reference internal" href="pip_services3_data.persistence.html#pip_services3_data.persistence.MemoryPersistence.get_list_by_filter" title="pip_services3_data.persistence.MemoryPersistence.get_list_by_filter"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_list_by_filter()</span></code></a> method from child class that
 receives <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.data.FilterParams.html#pip_services3_commons.data.FilterParams.FilterParams" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">FilterParams</span></code></a> and converts them into a filter function.</p>
@@ -312,7 +340,7 @@ receives <a class="reference external" href="https://pip-services3-python.github
 
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_one_random">
-<code class="sig-name descname">get_one_random</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_one_random" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_one_random</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; T<a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_one_random" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a random item from items that match to a given filter.</p>
 <p>This method shall be called by a public <a class="reference internal" href="pip_services3_data.persistence.html#pip_services3_data.persistence.MemoryPersistence.get_one_random" title="pip_services3_data.persistence.MemoryPersistence.get_one_random"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_one_random()</span></code></a> method from child class
 that receives <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.data.FilterParams.html#pip_services3_commons.data.FilterParams.FilterParams" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">FilterParams</span></code></a> and converts them into a filter function.</p>
@@ -328,7 +356,7 @@ that receives <a class="reference external" href="https://pip-services3-python.g
 
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_page_by_filter">
-<code class="sig-name descname">get_page_by_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">filter</span></em>, <em class="sig-param"><span class="n">paging</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.data.PagingParams.html#pip_services3_commons.data.PagingParams.PagingParams" title="(in pip-services3-commons)">pip_services3_commons.data.PagingParams.PagingParams</a></span></em>, <em class="sig-param"><span class="n">sort</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">select</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.data.DataPage.html#pip_services3_commons.data.DataPage.DataPage" title="(in pip-services3-commons)">pip_services3_commons.data.DataPage.DataPage</a><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_page_by_filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_page_by_filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">filter</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">paging</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.data.PagingParams.html#pip_services3_commons.data.PagingParams.PagingParams" title="(in pip-services3-commons)">pip_services3_commons.data.PagingParams.PagingParams</a></span></em>, <em class="sig-param"><span class="n">sort</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">select</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.data.DataPage.html#pip_services3_commons.data.DataPage.DataPage" title="(in pip-services3-commons)">pip_services3_commons.data.DataPage.DataPage</a><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.get_page_by_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a page of data items retrieved by a given filter and sorted according to sort parameters.</p>
 <p>This method shall be called by a public <a class="reference internal" href="pip_services3_data.persistence.html#pip_services3_data.persistence.MemoryPersistence.get_page_by_filter" title="pip_services3_data.persistence.MemoryPersistence.get_page_by_filter"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_page_by_filter()</span></code></a> method from child class that
 receives <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.data.FilterParams.html#pip_services3_commons.data.FilterParams.FilterParams" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">FilterParams</span></code></a> and converts them into a filter function.</p>
@@ -354,19 +382,20 @@ receives <a class="reference external" href="https://pip-services3-python.github
 <dd><p>Checks if the component is opened.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>true if the component has been opened and false otherwise.</p>
+<dd class="field-odd"><p>Anyrue if the component has been opened and false otherwise.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.load" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO add description</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.open">
-<code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.open" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.open" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens the component.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -377,7 +406,7 @@ receives <a class="reference external" href="https://pip-services3-python.github
 
 <dl class="py method">
 <dt id="pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.save">
-<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.save" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_data.persistence.MemoryPersistence.MemoryPersistence.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves items to external data source using configured saver component.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
