@@ -76,6 +76,12 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
         super(IdentifiableMemoryPersistence, self).__init__(loader, saver)
 
+    def __convert_to_obj(self, item):
+        if isinstance(item, dict):
+            item = type('object', (object,), item)
+
+        return item
+
     def get_list_by_ids(self, correlation_id: Optional[str], ids: List[Any]) -> List[T]:
         """
         Gets a list of data items retrieved by given unique ids.
@@ -88,6 +94,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
 
         def filter(item):
+            item = self.__convert_to_obj(item)
             return item.id in ids
 
         return self.get_list_by_filter(correlation_id, filter)
@@ -130,8 +137,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         :return: a created item
         """
-        if isinstance(item, dict):
-            item = type('object', (object,), item)
+        item = self.__convert_to_obj(item)
 
         if not hasattr(item, 'id') or item.id is None:
             item.id = IdGenerator.next_long()
@@ -148,12 +154,14 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         :return: an updated item
         """
-        if 'id' not in item or item['id'] is None:
-            item['id'] = IdGenerator.next_long()
+        item = self.__convert_to_obj(item)
+
+        if not hasattr(item, 'id') or item.id is None:
+            item.id = IdGenerator.next_long()
 
         self._lock.acquire()
         try:
-            old_item = self._find_one(item['id'])
+            old_item = self._find_one(item.id)
             if old_item is None:
                 self._items.append(item)
             else:
@@ -183,6 +191,8 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
         self._lock.acquire()
         try:
+            new_item = self.__convert_to_obj(new_item)
+
             old_item = self._find_one(new_item.id)
             if old_item is None:
                 return None
@@ -217,7 +227,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self._lock.acquire()
         try:
             old_item = self._find_one(id)
-            if old_item == None:
+            if old_item is None:
                 return None
 
             for k, v in data.items():
@@ -246,7 +256,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         self._lock.acquire()
         try:
             item = self._find_one(id)
-            if item == None: return None
+            if item is None: return None
 
             index = self._items.index(item)
             if index < 0: return None
@@ -270,6 +280,8 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
 
         def filter(item):
+            item = self.__convert_to_obj(item)
+
             return item.id in ids
 
         self.delete_by_filter(correlation_id, filter)

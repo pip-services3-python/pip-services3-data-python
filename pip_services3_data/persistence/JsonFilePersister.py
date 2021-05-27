@@ -14,7 +14,6 @@ import os
 from typing import Optional, List, TypeVar
 
 from pip_services3_commons.config import IConfigurable, ConfigParams
-from pip_services3_commons.convert import JsonConverter
 from pip_services3_commons.errors import ConfigException, FileException
 from pip_services3_commons.reflect import ObjectReader
 

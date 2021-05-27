@@ -6,6 +6,7 @@
 * fixed names of private, protected and public properties and methods
 * fixed documentation, add examples
 * fixed returned types for operations
+* fixed objects conversion
 
 ### Features
 * Added type hints

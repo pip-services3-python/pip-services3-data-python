@@ -173,6 +173,12 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         # Outside of lock to avoid reentry
         self.save(correlation_id)
 
+    def __convert_to_obj(self, item):
+        if isinstance(item, dict):
+            item = type('object', (object,), item)
+
+        return item
+
     def create(self, correlation_id: Optional[str], item: T) -> T:
         """
         Creates a data item.
@@ -185,6 +191,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         """
         self._lock.acquire()
         try:
+            item = self.__convert_to_obj(item)
             self._items.append(item)
         finally:
             self._lock.release()
