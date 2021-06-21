@@ -320,7 +320,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         # Return a list
         return len(items)
 
-    def get_one_random(self, correlation_id: Optional[str]) -> T:
+    def get_one_random(self, correlation_id: Optional[str], filter: Any) -> T:
         """
         Gets a random item from items that match to a given filter.
 
@@ -328,6 +328,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         that receives :class:`FilterParams <pip_services3_commons.data.FilterParams.FilterParams>` and converts them into a filter function.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
+        :param filter: (optional) a filter function to filter items.
 
         :return: a random item.
         """
@@ -336,8 +337,14 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
             if len(self._items) == 0:
                 return None
 
+            items = self._items
+
+            # Apply filter
+            if callable(filter):
+                items = list(filtered(filter, items))
+
             index = random.randint(0, len(self._items))
-            item = self._items[index]
+            item = None if len(items) <= 0 else items[index]
         finally:
             self._lock.release()
 
