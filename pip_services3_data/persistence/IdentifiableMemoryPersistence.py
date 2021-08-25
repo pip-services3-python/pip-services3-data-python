@@ -115,11 +115,8 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         :return: data item by id.
         """
-        self._lock.acquire()
-        try:
+        with self._lock:
             item = self._find_one(id)
-        finally:
-            self._lock.release()
 
         if not (item is None):
             self._logger.trace(correlation_id, "Retrieved " + str(item) + " by " + str(id))
@@ -159,8 +156,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         if not hasattr(item, 'id') or item.id is None:
             item.id = IdGenerator.next_long()
 
-        self._lock.acquire()
-        try:
+        with self._lock:
             old_item = self._find_one(item.id)
             if old_item is None:
                 self._items.append(item)
@@ -170,8 +166,6 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
                     self._items.append(item)
                 else:
                     self._items[index] = item
-        finally:
-            self._lock.release()
 
         self._logger.trace(correlation_id, "Set " + str(item))
 
@@ -189,8 +183,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         :return: an updated item.
         """
-        self._lock.acquire()
-        try:
+        with self._lock:
             new_item = self.__convert_to_obj(new_item)
 
             old_item = self._find_one(new_item.id)
@@ -201,8 +194,6 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
             if index < 0: return None
 
             self._items[index] = new_item
-        finally:
-            self._lock.release()
 
         self._logger.trace(correlation_id, "Updated " + str(new_item))
 
@@ -224,8 +215,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
         """
         new_item = None
 
-        self._lock.acquire()
-        try:
+        with self._lock:
             old_item = self._find_one(id)
             if old_item is None:
                 return None
@@ -234,8 +224,6 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
                 setattr(old_item, k, v)
 
             new_item = old_item
-        finally:
-            self._lock.release()
 
         self._logger.trace(correlation_id, "Partially updated " + str(old_item))
 
@@ -253,8 +241,7 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
 
         :return: a deleted item.
         """
-        self._lock.acquire()
-        try:
+        with self._lock:
             item = self._find_one(id)
             if item is None: return None
 
@@ -262,8 +249,6 @@ class IdentifiableMemoryPersistence(MemoryPersistence, IWriter, IGetter, ISetter
             if index < 0: return None
 
             del self._items[index]
-        finally:
-            self._lock.release()
 
         self._logger.trace(correlation_id, "Deleted " + str(item))
 

@@ -11,6 +11,7 @@
 
 import random
 import threading
+from copy import deepcopy
 from typing import List, Any, Optional, TypeVar
 
 from pip_services3_commons.config import IConfigurable, ConfigParams
@@ -130,12 +131,9 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         """
         if self._loader is None: return
 
-        self._lock.acquire()
-        try:
+        with self._lock:
             self._items = self._loader.load(correlation_id)
 
-        finally:
-            self._lock.release()
 
         self._logger.trace(correlation_id, "Loaded " + str(len(self._items)) + " items")
 
@@ -147,11 +145,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         """
         if self._saver is None: return
 
-        self._lock.acquire()
-        try:
+        with self._lock:
             self._saver.save(correlation_id, self._items)
-        finally:
-            self._lock.release()
 
         self._logger.trace(correlation_id, "Saved " + str(len(self._items)) + " items")
 
@@ -161,12 +156,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
-        self._lock.acquire()
-
-        try:
+        with self._lock:
             del self._items[:]
-        finally:
-            self._lock.release()
 
         self._logger.trace(correlation_id, "Cleared items")
 
@@ -189,12 +180,9 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         :return: a created item
         """
-        self._lock.acquire()
-        try:
+        with self._lock:
             item = self.__convert_to_obj(item)
             self._items.append(item)
-        finally:
-            self._lock.release()
 
         self._logger.trace(correlation_id, "Created " + str(item))
 
@@ -222,17 +210,14 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         :return: a data page of result by filter.
         """
-        self._lock.acquire()
-        try:
-            items = list(self._items)
-        finally:
-            self._lock.release()
+        with self._lock:
+            items = deepcopy(self._items)
 
         # Filter and sort
         if filter is not None:
             items = list(filtered(filter, items))
         if sort is not None:
-            items = list(items.sort(key=sort))
+            items = list(filtered(sort, items))
             # items = sorted(items, sort)
 
         # Prepare paging parameters
@@ -274,11 +259,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         :return: a data list of results by filter.
         """
-        self._lock.acquire()
-        try:
-            items = list(self._items)
-        finally:
-            self._lock.release()
+        with self._lock:
+            items = deepcopy(self._items)
 
         # Filter and sort
         if not (filter is None):
@@ -305,11 +287,8 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         :return:  a number of data items that satisfy the filter.
         """
 
-        self._lock.acquire()
-        try:
-            items = list(self._items)
-        finally:
-            self._lock.release()
+        with self._lock:
+            items = deepcopy(self._items)
 
         # Filter and sort
         if not (filter is None):
@@ -332,8 +311,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
         :return: a random item.
         """
-        self._lock.acquire()
-        try:
+        with self._lock:
             if len(self._items) == 0:
                 return None
 
@@ -345,8 +323,6 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
 
             index = random.randint(0, len(self._items))
             item = None if len(items) <= 0 else items[index]
-        finally:
-            self._lock.release()
 
         if not (item is None):
             self._logger.trace(correlation_id, "Retrieved a random item")
@@ -370,14 +346,12 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         def negative_filter(item):
             return not filter(item)
 
-        old_length = len(list(self._items))
+        old_length = len(deepcopy(self._items))
 
-        self._lock.acquire()
-        try:
+        with self._lock:
             self._items = list(filtered(negative_filter, self._items))
-        finally:
-            self._lock.release()
-        deleted = old_length - len(list(self._items))
+
+        deleted = old_length - len(deepcopy(self._items))
         self._logger.trace(correlation_id, "Deleted " + str(deleted) + " items")
 
         if deleted > 0:
