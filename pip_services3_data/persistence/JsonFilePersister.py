@@ -2,20 +2,20 @@
 """
     pip_services3_data.persistence.JsonFilePersister
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     JSON file persister implementation
-    
+
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
 
-import json
 import os
 from typing import Optional, List, TypeVar
 
 from pip_services3_commons.config import IConfigurable, ConfigParams
+from pip_services3_commons.convert.ArrayConverter import ArrayConverter
+from pip_services3_commons.convert.JsonConverter import JsonConverter
 from pip_services3_commons.errors import ConfigException, FileException
-from pip_services3_commons.reflect import ObjectReader
 
 from ..ILoader import ILoader
 from ..ISaver import ISaver
@@ -35,14 +35,14 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
     Example:
 
     .. code-block:: python
-    
+
         persister = JsonFilePersister("./data/data.json")
 
         persister.save("123", ["A", "B", "C"])
-        ...
 
-        persister.load("123", items)
-        print items
+        ...
+        items = persister.load("123")
+        print(items)
     """
 
     def __init__(self, path: str = None):
@@ -77,12 +77,7 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
 
         :param config: configuration parameters to be set.
         """
-        try:
-            if config is not None or config.get("path"):
-                self.__path = config.get_as_string("path")
-
-        except AttributeError:
-            raise ConfigException(None, "NO_PATH", "Data file path is not set")
+        self.__path = config.get_as_string_with_default('path', self.__path)
 
     def load(self, correlation_id: Optional[str]) -> List[T]:
         """
@@ -93,12 +88,22 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
         :return: loaded items
         """
         # If doesn't exist then consider empty data
+        if self.__path is None:
+            raise ConfigException(
+                correlation_id,
+                "NO_PATH",
+                "Data file path is not set"
+            )
+
         if not os.path.isfile(self.__path):
             return []
 
         try:
             with open(self.__path, 'r') as file:
-                return json.load(file)
+                data = file.read()
+                list_data = JsonConverter.to_nullable_map(data)
+                arr = ArrayConverter.list_to_array(list_data)
+                return arr
         except Exception as ex:
             raise FileException(correlation_id, "READ_FAILED", "Failed to read data file: " + str(ex)) \
                 .with_cause(ex)
@@ -112,12 +117,9 @@ class JsonFilePersister(ILoader, ISaver, IConfigurable):
         :param items: list if data items to save
         """
         try:
-            list_props = []
-            for item in items:
-                list_props.append(ObjectReader.get_properties(item))
-
             with open(self.__path, 'w') as file:
-                json.dump(list_props, file)
+                data = JsonConverter.to_json(items)
+                file.write(data)
         except Exception as ex:
             raise FileException(correlation_id, "WRITE_FAILED", "Failed to write data file: " + str(ex)) \
                 .with_cause(ex)
