@@ -230,7 +230,7 @@ class MemoryPersistence(IConfigurable, IReferenceable, IOpenable, ICleanable):
         if skip > 0:
             data = data[skip:]
         if take > 0:
-            data = data[:take + 1]
+            data = data[:take]
 
         # Convert values
         if not (select is None):

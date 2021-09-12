@@ -23,7 +23,7 @@ except:
 
 setup(
     name='pip_services3_data',
-    version='3.2.2',
+    version='3.2.3',
     url='http://github.com/pip-services3-python/pip-services3-data-python',
     license='MIT',
     author='Conceptual Vision Consulting LLC',
@@ -36,7 +36,8 @@ setup(
     zip_safe=True,
     platforms='any',
     install_requires=[
-        'iso8601', 'PyYAML', 'pystache', 'pytest', 'pytz', 'pip_services3_commons', 'pip_services3_components'
+        'pip_services3_commons',
+        'pip_services3_components'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
