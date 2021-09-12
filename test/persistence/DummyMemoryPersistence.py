@@ -10,9 +10,9 @@
 """
 
 from pip_services3_commons.data import FilterParams
+
+from pip_services3_data import IPartialUpdater
 from pip_services3_data.persistence import IdentifiableMemoryPersistence
-from ..IDummyPersistence import IDummyPersistence
-from pip_services3_data import IGetter, IWriter, IPartialUpdater
 
 
 class DummyMemoryPersistence(IdentifiableMemoryPersistence, IPartialUpdater):

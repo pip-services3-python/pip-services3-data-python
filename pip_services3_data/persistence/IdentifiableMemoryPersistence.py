@@ -12,8 +12,8 @@ from typing import Optional, Any, List, TypeVar
 
 from pip_services3_commons.data import IdGenerator, IIdentifiable, AnyValueMap
 
-from pip_services3_data import ISaver, ILoader
 from .MemoryPersistence import MemoryPersistence
+from .. import ISaver, ILoader
 from ..IGetter import IGetter
 from ..ISetter import ISetter
 from ..IWriter import IWriter

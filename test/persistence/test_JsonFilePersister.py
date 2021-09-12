@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from pip_services3_data.persistence.JsonFilePersister import JsonFilePersister
-from ..Dummy import Dummy
 from pip_services3_commons.config.ConfigParams import ConfigParams
 from pip_services3_commons.errors.ConfigException import ConfigException
+
+from pip_services3_data.persistence.JsonFilePersister import JsonFilePersister
+from ..Dummy import Dummy
 
 
 class TestJsonFilePersister:
