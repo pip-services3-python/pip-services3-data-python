@@ -36,8 +36,8 @@ setup(
     zip_safe=True,
     platforms='any',
     install_requires=[
-        'pip_services3_commons',
-        'pip_services3_components'
+        'pip_services3_commons >= 3.3.11, < 4.0',
+        'pip_services3_components >= 3.5.5, < 4.0'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -45,7 +45,6 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',

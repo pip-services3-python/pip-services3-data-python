@@ -1,4 +1,4 @@
 pytest
 
-pip_services3_commons
-pip_services3_components
+pip_services3_commons >= 3.3.11, < 4.0
+pip_services3_components >= 3.5.5, < 4.0
